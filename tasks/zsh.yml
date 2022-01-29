@@ -1,0 +1,86 @@
+
+- name: "[zsh] [pacman] install git and zsh"
+  pacman:
+    name:
+      - git
+      - zsh
+    state: latest
+  become: yes
+  become_user: "{{ user[inventory_hostname].0.name }}"
+
+- block:
+  - name: "[file] [{{ user[inventory_hostname].1.name}}] create link ~/.zprofile"
+    file:
+      src:   "{{ path.shell }}/profile.sh"
+      dest:  $HOME/.zprofile
+      mode:  0600
+      # mode:  "0640"            ## essayer réduire en 600 max
+      state: link
+
+  - name: "[zsh] [stat] [{{ user[inventory_hostname].1.name}}] check if .cache/zsh/history exists"
+    stat:
+      path: "$HOME/.cache/zsh/history"
+    register: _zsh_history
+
+  - name: "[zsh] [file] [{{ user[inventory_hostname].1.name}}] create zsh file history"
+    loop:
+      - { path: zsh,         state: directory }
+      - { path: zsh/history, state: touch }
+    when: not _zsh_history.stat.exists
+    file:
+      path: "$HOME/.cache/{{ item.path }}"
+      state: "{{ item.state }}"
+
+  - name: "[zsh] [git] [{{ user[inventory_hostname].1.name}}] clone oh-my-zsh on {{ path.zsh }}"
+    git:
+      repo:  https://github.com/robbyrussell/oh-my-zsh
+      dest:  "{{ path.zsh }}/oh-my-zsh"
+      depth: 1
+
+  - name: "[zsh] [template] [{{ user[inventory_hostname].1.name}}] push .zshrc"
+    template:
+      src:  zshrc.j2
+      dest: "{{ path.zsh }}/.zshrc"
+      mode: 0600
+      # mode: 0640
+
+  - name: "[zsh] [file] [{{ user[inventory_hostname].1.name}}] set permissions of oh-my-zsh"
+    file:
+      path: "{{ path.zsh }}/oh-my-zsh"
+      mode: go-w
+      recurse: yes
+
+  become: yes
+  become_user: "{{ user[inventory_hostname].1.name }}"
+
+# - name: "[zsh] [template] create .zshrc on root"
+#   template:
+#     src: zshrc_root.j2
+#     dest: /root/.zshrc
+#     mode: "0600"
+
+- block:
+  # - name: "[file] [{{ user[inventory_hostname].0.name}}] create link ~/.zprofile"
+  #   file:
+  #     src:   "{{ path.shell }}/profile.sh"
+  #     dest:  $HOME/.zprofile
+  #     mode:  "0640"            ## essayer réduire en 600 max
+  #     state: link
+
+  - name: "[zsh] [stat] [{{ user[inventory_hostname].0.name}}] check if .cache/zsh/history exists"
+    stat:
+      path: "$HOME/.cache/zsh/history"
+    register: _zsh_history_root
+
+  - name: "[zsh] [file] [{{ user[inventory_hostname].0.name}}] create zsh file history"
+    file:
+      path: "$HOME/.cache/{{ item.path }}"
+      state: "{{ item.state }}"
+    with_items:
+      - { path: zsh,         state: directory }
+      - { path: zsh/history, state: touch }
+    when: not _zsh_history_root.stat.exists
+
+  become: yes
+  become_user: "{{ user[inventory_hostname].0.name }}"
+

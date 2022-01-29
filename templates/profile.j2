@@ -1,0 +1,25 @@
+#!/bin/sh
+
+export SHELLRC="$HOME/.config/shell"
+[ -f "$SHELLRC/exports.sh" ]         && source "$SHELLRC/exports.sh"
+[ -f "$SHELLRC/aliases.sh" ]         && source "$SHELLRC/aliases.sh"
+[ -f "$SHELLRC/icons.sh" ]           && source "$SHELLRC/icons.sh"
+[ -f "$SCRIPTS/shell/functions.sh" ] && source "$SCRIPTS/shell/functions.sh"
+[ -f "$SCRIPTS/shell/network.sh" ]   && source "$SCRIPTS/shell/network.sh"
+[ -f "$SCRIPTS/shell/git.sh" ]       && source "$SCRIPTS/shell/git.sh"
+[ -f "$SCRIPTS/shell/packages.sh" ]  && source "$SCRIPTS/shell/packages.sh"
+[ -f "$SCRIPTS/shell/fzf/fzf.sh" ]   && source "$SCRIPTS/shell/fzf/fzf.sh"
+
+# ???
+unsetopt PROMPT_SP
+
+$(pacman -Qs libxft-bgra-git >/dev/null 2>&1) && \
+  [ "$(tty)" = "/dev/tty1" ] && \
+    ! pidof -s Xorg >/dev/null 2>&1 && \
+      exec startx $XINITRC
+
+# Switch escape and caps if tty and no passwd required:
+sudo -n loadkeys $SHARE/ttymaps.kmap 2>/dev/null
+
+# ask only one time ssh password
+# sed -e "/^#pass -c machines\/proxmox_ve\/ssh/s/^#//g" -i $HOME/.config/shellrc/functions.sh
