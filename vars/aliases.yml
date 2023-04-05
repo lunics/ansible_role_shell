@@ -31,6 +31,7 @@ aliases:
   tf:         terraform
   py:         python
   c-:         c -
+  ia:         chatblade --chat-gpt 3.5 --stream
   aph:        ansible_homelab
   # su:         machinectl shell [username]@.host             ## a tester: new su for systemd
   size:       du -sh              ## trouver un remplacant ?

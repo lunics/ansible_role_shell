@@ -83,6 +83,7 @@
       loop:
         - icons.sh
         - sources.sh
+        - functions.sh
         - inputrc
 
     when: _user.name != root
