@@ -1,0 +1,12 @@
+#!/bin/sh
+
+export SHELLRC="$HOME/.config/shell"
+[ -f "$SHELLRC/exports.sh" ] && source "$SHELLRC/exports.sh"
+[ -f "$SHELLRC/aliases.sh" ] && source "$SHELLRC/aliases.sh"
+[ -f "$SHELLRC/icons.sh" ]   && source "$SHELLRC/icons.sh"
+
+# old, all scripts are in the PATH now
+# for script in $(/usr/bin/find $SCRIPTS/shell/sourced -type f -name "*.sh")
+# do
+#   source $script
+# done

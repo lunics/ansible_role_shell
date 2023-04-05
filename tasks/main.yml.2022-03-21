@@ -1,0 +1,83 @@
+
+- include: shell.yml
+  loop: "{{ user }}"
+
+- block:
+  - name: "[set_fact] for shell role"
+    set_fact:
+      _shell: "{{ user.1.shell | default(default_shell) }}"
+      _path:  "{{ path_config + '/' + (user.1.shell | default(default_shell)) }}"
+
+  - name: "[user] set default SHELL={{ _shell }} for {{ item.name }}"
+    user:
+      name:  "{{ item.name }}"
+      shell: "/bin/{{ item.shell | default(default_shell) }}"
+    # shell: chsh -s /bin/{{ _shell }}
+    # lineinfile:
+    #   path:   "{{ path_config
+    #   create: yes
+    #   regexp: ^SELINUX=               # to be sure to only have 1 line SELINUX=
+    #   insertafter: ^WORD              # optionnal
+    #   state:
+    #   line:   SELINUX=enforcing
+
+  - name: "[file] [{{ user.1.name }}] create {{ path_shell }}"
+    file:
+      path:  "{{ path_shell }}"
+      state: directory
+      mode:  0700
+
+  - name: "[template] [{{ user.1.name }}] copy exports, aliases ans icons on {{ path_shell }}"
+    loop:
+      - exports
+      - aliases
+      - icons
+    template:
+      src:  "{{ item }}.j2"
+      dest: "{{ path_shell }}/{{ item }}.sh"
+      mode: 0600
+
+  ## a adapter selon root ou user
+  # - name: "[template] [{{ user.1.name }}] copy {{ _shell }} profile on {{ path_shell }}/profile.sh"
+  #   template:
+  #     src:  profile.j2
+  #     dest: "{{ path_shell }}/profile.sh"
+  #     mode: 0600
+
+  # become: yes
+  # become_user: "{{ item.name }}"
+
+# - block:
+#   - name: "[file] [{{ user.0.name }}] create {{ path_shell }}"
+#     file:
+#       path:  "{{ path_shell }}"
+#       state: directory
+#       mode:  0700
+#       # mode:  "0750"            ## essayer de le réduire
+
+#   ## supprimer exports_root.j2 et aliases_root.j2 ?
+#   - name: "[template] [{{ user.0.name }}] copy exports, aliases on {{ path_shell }}"
+#     loop:
+#       - exports
+#       - aliases
+#     template:
+#       src:  "{{ item }}.j2"
+#       dest: "{{ path_shell }}/{{ item }}.sh"
+#       mode: 0600
+#       # mode: "0640"
+
+#   - name: "[template] [{{ user.0.name }}] copy profile.zsh on $HOME/.zshrc"
+#     template:
+#       src:  profile_root.j2
+#       # dest: "{{ path_shell }}/profile.sh"
+#       dest: "$HOME/.zshrc"
+#       mode: 0600
+#       # mode: "0640"            ## essayer réduire en 600 max
+
+#   become: yes
+#   become_user: "{{ user.0.name }}"
+
+- include: zsh.yml
+
+# - include: bash.yml
+

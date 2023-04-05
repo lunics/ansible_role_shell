@@ -1,0 +1,24 @@
+- block:
+  - name: prompt | pacman > install pkg
+    community.general.pacman:
+      name: "{{ item }}"
+      executable: "{{ default_aur }}"
+      extra_args: "--builddir {{ path_cache_aur }}"
+    loop:
+      - starship                    # the best one
+      # - zsh-theme-powerlevel10k
+      # - spaceship-prompt
+    become_user: aur
+
+  - name: prompt | file > create starship config dir
+    ansible.builtin.file:
+      path:  "{{ path_config }}/starship"
+      state: directory
+
+  - name: prompt | template > generate starship config file
+    ansible.builtin.template:
+      src:  starship_config.toml.j2
+      dest: "{{ path_config }}/starship/config.toml"
+    tags: shell_prompt_template
+
+  tags: shell_prompt, prompt

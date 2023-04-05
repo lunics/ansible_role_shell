@@ -1,86 +1,82 @@
-
-- name: "[zsh] [pacman] install git and zsh"
-  pacman:
-    name:
-      - git
-      - zsh
-    state: latest
-  become: yes
-  become_user: "{{ user[inventory_hostname].0.name }}"
-
+# todo
+#   https://github.com/ericmurphyxyz/archrice/tree/master/.config/zsh
 - block:
-  - name: "[file] [{{ user[inventory_hostname].1.name}}] create link ~/.zprofile"
-    file:
-      src:   "{{ path.shell }}/profile.sh"
-      dest:  $HOME/.zprofile
-      mode:  0600
-      # mode:  "0640"            ## essayer réduire en 600 max
-      state: link
-
-  - name: "[zsh] [stat] [{{ user[inventory_hostname].1.name}}] check if .cache/zsh/history exists"
-    stat:
-      path: "$HOME/.cache/zsh/history"
-    register: _zsh_history
-
-  - name: "[zsh] [file] [{{ user[inventory_hostname].1.name}}] create zsh file history"
-    loop:
-      - { path: zsh,         state: directory }
-      - { path: zsh/history, state: touch }
-    when: not _zsh_history.stat.exists
-    file:
-      path: "$HOME/.cache/{{ item.path }}"
+  - name: zsh | pacman > install packages
+    community.general.pacman:
+      name:  "{{ item.name }}"
       state: "{{ item.state }}"
+    loop:
+      - { name: git,  state: present }
+      - { name: zsh,  state: present }
+      - { name: mawk, state: absent  }  # must not be installed for zplug
 
-  - name: "[zsh] [git] [{{ user[inventory_hostname].1.name}}] clone oh-my-zsh on {{ path.zsh }}"
-    git:
-      repo:  https://github.com/robbyrussell/oh-my-zsh
-      dest:  "{{ path.zsh }}/oh-my-zsh"
-      depth: 1
+  - name: zsh | template > generate zshenv dot file
+    ansible.builtin.template:
+      src:  profile.sh.j2    # needed by st terminal in hyprland, because source exports in profile.sh is load in a wayland instance ?
+      dest: $HOME/.zshenv
 
-  - name: "[zsh] [template] [{{ user[inventory_hostname].1.name}}] push .zshrc"
+  - name: zsh | blockinfile > add exports
+    ansible.builtin.blockinfile:
+      path:   "{{ path_exports }}"
+      marker: "# {mark} zsh"
+      block: |
+        {% for item in zsh_exports | dict2items(key_name="export", value_name="value") %}
+          export {{ item.export }}={{ item.value }}
+        {% endfor %}
+    vars:
+      zsh_exports:
+        ZSHRC:    $SHELLRC/zsh
+        ZSH:      $ZSHRC/oh-my-zsh
+        ZDOTDIR:  $ZSHRC
+
+  ## A DELETE IS OK quand le fichier n'existe pas
+  # - name: "[zsh] [stat] [{{ user.1.name }}] check if .cache/zsh/history exists"
+  #   stat:
+  #     path: "$HOME/.cache/zsh/history"
+  #   register: _zsh_history
+
+  # superseeded by atuin
+  #- name: zsh | file > create zsh file history
+  #  file:
+  #    path: "$HOME/.cache/{{ item.path }}"
+  #    state: "{{ item.state }}"
+  #  loop:
+  #    - { path: zsh,         state: directory }
+  #    - { path: zsh/history, state: touch     }
+  #    #old: - { path: zsh/history, state: file }
+  #  # when: not _zsh_history.stat.exists
+
+  - name: zsh | file > create zsh parent directory
+    ansible.builtin.file:
+      path:  "{{ path_zsh }}"
+      state: directory
+
+  - name: zsh | template > export zsh scripts
+    ansible.builtin.template:
+      src:  "{{ item }}"
+      dest: "{{ path_zsh + '/' + (item | basename) }}"
+      mode: "0600"
+    with_fileglob:
+      - ../templates/zsh/*
+
+  - name: zsh | template > generate .zshrc
     template:
       src:  zshrc.j2
-      dest: "{{ path.zsh }}/.zshrc"
+      dest: "{{ path_zsh }}/.zshrc"
       mode: 0600
-      # mode: 0640
 
-  - name: "[zsh] [file] [{{ user[inventory_hostname].1.name}}] set permissions of oh-my-zsh"
-    file:
-      path: "{{ path.zsh }}/oh-my-zsh"
-      mode: go-w
-      recurse: yes
-
-  become: yes
-  become_user: "{{ user[inventory_hostname].1.name }}"
-
-# - name: "[zsh] [template] create .zshrc on root"
-#   template:
-#     src: zshrc_root.j2
-#     dest: /root/.zshrc
-#     mode: "0600"
-
-- block:
-  # - name: "[file] [{{ user[inventory_hostname].0.name}}] create link ~/.zprofile"
-  #   file:
-  #     src:   "{{ path.shell }}/profile.sh"
-  #     dest:  $HOME/.zprofile
-  #     mode:  "0640"            ## essayer réduire en 600 max
-  #     state: link
-
-  - name: "[zsh] [stat] [{{ user[inventory_hostname].0.name}}] check if .cache/zsh/history exists"
+  - name: zsh | stat > check if zplug repo present
     stat:
-      path: "$HOME/.cache/zsh/history"
-    register: _zsh_history_root
+      path: "{{ path_zsh }}/zplug"
+    register: _zplug
 
-  - name: "[zsh] [file] [{{ user[inventory_hostname].0.name}}] create zsh file history"
-    file:
-      path: "$HOME/.cache/{{ item.path }}"
-      state: "{{ item.state }}"
-    with_items:
-      - { path: zsh,         state: directory }
-      - { path: zsh/history, state: touch }
-    when: not _zsh_history_root.stat.exists
+  - name: zsh | git > clone zplug on {{ path_zsh }}/zplug/
+    git:
+      repo:  https://github.com/zplug/zplug
+      dest:  "{{ path_zsh }}/zplug"
+      depth: 1
+    when: not _zplug.stat.exists
 
-  become: yes
-  become_user: "{{ user[inventory_hostname].0.name }}"
+  # - include: oh-my-zsh.yml
 
+  tags: shell_zsh, zsh

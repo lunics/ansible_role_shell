@@ -1,0 +1,8 @@
+- block:
+  # entry point where xorg starts or wayland
+  - name: bash | template > generate ~/.profile
+    ansible.builtin.template:
+      src:  profile.sh.j2
+      dest: $HOME/.profile
+
+  tags: bash

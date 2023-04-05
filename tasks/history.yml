@@ -1,0 +1,22 @@
+- block:
+  - name: history | file > mkdir atuin config & cloud dirs
+    file:
+      path:  "{{ item }}/atuin"
+      state: directory
+    with_items:
+      - "{{ path_share_cloud }}"
+      - "{{ path_config }}"
+
+  - name: history | pacman > install atuin
+    ansible.builtin.package:
+      name: "{{ item }}"
+    loop:
+      - atuin
+    become_user: "{{ root }}"
+
+  - name: history | template > generate atuin config
+    template:
+      src:  config.toml.j2
+      dest: "{{ path_config }}/atuin/config.toml"
+
+  tags: history, atuin
