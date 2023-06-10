@@ -7,8 +7,8 @@
       - "{{ path_share_cloud }}"
       - "{{ path_config }}"
 
-  - name: history | pacman > install atuin
-    ansible.builtin.package:
+  - name: history | package > install dependencies
+    package:
       name: "{{ item }}"
     loop:
       - atuin

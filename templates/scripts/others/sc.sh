@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/env bash
 
 arg1=$(echo $1 | sed 's/,/./')
 

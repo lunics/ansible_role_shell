@@ -1,42 +1,22 @@
 - block:
-  - name: shell | {{ _user.name }} | set_fact > for shell role
-    set_fact:
-      _shell: "{{ _user.shell | default(default_shell) }}"
-      _path:  "{{ path_config + '/' + (_user.shell | default(default_shell)) }}"
-
-  - name: shell | {{ _user.name }} | user > set default SHELL={{ _shell }}
-    user:
-      name:  "{{ _user.name }}"
-      shell: "/bin/{{ _user.shell | default(default_shell) }}"
-    become: yes
-    when: false       ## A REACTIVER LA TACHE, ERROR known by this current ansible version
-
   - block:
-    - name: shell | {{ _user.name }} | file > create shell config dir
+    - name: shell | {{ i_user.name }} | file > create {{ path_shell }} dir
       file:
-        path:  "{{ path_shell   }}"
+        path:  "{{ path_shell }}"
         state: directory
-        mode:  "0700"
+        mode:  0700
 
     - block:
-      # - name: shell | file > create custom user bin dir
-      #   ansible.builtin.file:
-      #     path:  "{{ path_bin }}/{{ item }}"
-      #     state: directory
-      #   loop:
-      #     - available/shell
-      #     - enabled
-
-      - name: shell | file > create ~/.local/bin dir
-        ansible.builtin.file:
+      - name: shell | file > create {{ path_bin }} dir
+        file:
           path:  "{{ path_bin }}"
           state: directory
 
-      - name: shell | template > ~/.local/bin scripts
-        ansible.builtin.template:
+      - name: shell | template > deploy scripts on {{ path_bin }}
+        template:
           src:  "{{ item }}"
           dest: "{{ path_bin + '/' + (item | basename | regex_replace('\\.*[a-z0-9]{1,3}$', '')) }}"
-          mode: "0700"
+          mode: 0700
         with_fileglob:
           - ../templates/scripts/others/*
           - ../templates/scripts/files/*
@@ -45,37 +25,9 @@
           - ../templates/scripts/network/*
           - ../templates/scripts/packages/*
 
-      # - name: shell | synchronize > ~/.local/bin scripts
-      #   synchronize:
-      #     src:          "{{ role_path }}/files/bin/shell/{{ item }}/"
-      #     dest:         "{{ path_bin }}"
-      #     rsync_path:   "sudo -u {{ _user.name }} rsync"
-      #     use_ssh_args: yes
-      #   loop:
-      #     - others
-      #     - files
-      #     - fzf
-      #     - git
-      #     - network
-      #     - packages
-          # dest:         "/home/{{ _user.name + '/.local' + item.dest }}"
-        # loop:
-          # - { src: bin/shell/, dest: "/bin/available/shell", delete: yes }
-
-      # - name: shell | shell > unlink older broken links then link every bin files into $BIN/enabled
-      #   shell: |
-      #     for path_link in $(/usr/bin/find ~/.local/bin/enabled -xtype l); do
-      #       rm -f $path_link
-      #     done
-      #     for path_file in $(/usr/bin/find {{ path_bin }}/available/shell -type f); do
-      #       file_name=$(basename "$path_file")
-      #       enabled_file="{{ path_bin }}/enabled/$file_name"
-      #       [ -f "$enabled_file" ] || /usr/bin/ln -s $path_file $enabled_file
-      #     done
-
       tags: shell_bin_files
 
-    - name: shell | {{ _user.name }} | template > deploy icons.sh, inputrc on {{ path_shell }}
+    - name: shell | {{ i_user.name }} | template > deploy icons.sh, inputrc on {{ path_shell }}
       template:
         src:  "{{ item }}.j2"
         dest: "{{ path_shell }}/{{ item }}"
@@ -83,12 +35,27 @@
       loop:
         - icons.sh
         - sources.sh
-        - functions.sh
         - inputrc
 
-    when: _user.name != root
+    - name: shell | {{ i_user.name }} | file > create shell functions dir
+      file:
+        path: "{{ path_shell }}/functions"
+        state: directory
 
-  tags: aliases
+    - name: shell | {{ i_user.name }} | template > sourced shell functions
+      template:
+        src:  "{{ item }}"
+        dest: "{{ path_shell }}/functions/{{ item | basename }}"
+      with_fileglob:
+        - ../templates/scripts/sourced/*
+
+    - name: shell | git > clone git-subrepo
+      git:
+        repo: https://github.com/ingydotnet/git-subrepo
+        dest: "{{ path_local }}/repo/git-subrepo"
+
+    when: i_user.name != root
+
   become_user: "{{ _user.name }}"
 
 # - block:
@@ -119,4 +86,4 @@
 #       # mode: "0640"            ## essayer réduire en 600 max
 
 #   become: yes
-#   become_user: "{{ user.0.name }}"
+#   becomei_user: "{{ user.0.name }}"

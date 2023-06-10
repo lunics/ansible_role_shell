@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/env bash
 
 # Feed script a url or file location.
 # If an image, it will view in sxiv,

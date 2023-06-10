@@ -2,7 +2,7 @@
 #   https://github.com/ericmurphyxyz/archrice/tree/master/.config/zsh
 - block:
   - name: zsh | pacman > install packages
-    community.general.pacman:
+    pacman:
       name:  "{{ item.name }}"
       state: "{{ item.state }}"
     loop:
@@ -11,12 +11,12 @@
       - { name: mawk, state: absent  }  # must not be installed for zplug
 
   - name: zsh | template > generate zshenv dot file
-    ansible.builtin.template:
+    template:
       src:  profile.sh.j2    # needed by st terminal in hyprland, because source exports in profile.sh is load in a wayland instance ?
       dest: $HOME/.zshenv
 
   - name: zsh | blockinfile > add exports
-    ansible.builtin.blockinfile:
+    blockinfile:
       path:   "{{ path_exports }}"
       marker: "# {mark} zsh"
       block: |
@@ -47,12 +47,12 @@
   #  # when: not _zsh_history.stat.exists
 
   - name: zsh | file > create zsh parent directory
-    ansible.builtin.file:
+    file:
       path:  "{{ path_zsh }}"
       state: directory
 
   - name: zsh | template > export zsh scripts
-    ansible.builtin.template:
+    template:
       src:  "{{ item }}"
       dest: "{{ path_zsh + '/' + (item | basename) }}"
       mode: "0600"

@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/env bash
 
 if [[ $(tldr $1 &> /dev/null) ]]; then
   tldr $1

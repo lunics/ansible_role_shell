@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/env bash
 
 if [ -d /mnt/test2 ]; then
   pass -c test2

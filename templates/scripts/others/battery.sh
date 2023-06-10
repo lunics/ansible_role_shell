@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/env bash
 
 ## loop until 100% then reset
   # setcharge 80 81 BAT0    # reset BAT1 to default settings to stop BAT1 charging over 81%

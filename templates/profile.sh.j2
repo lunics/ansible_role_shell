@@ -16,9 +16,9 @@ fi
 {% elif compositor == "wayland" %}
 if [[ -z "${DISPLAY}" ]] && [[ "${XDG_VTNR}" -eq 1 ]]; then    # XDG_VNTR only avalaible with systemd os
 {% if window_manager == "sway" %}
-  exec sway --debug &> ~/.cache/sway.log
+  exec sway --debug &> {{ path_logs }}/sway.log
 {% elif window_manager == "hyprland" %}
-  exec Hyprland # &> ~/.cache/hyprland.log, use alias log_hypr instead
+  exec Hyprland &> {{ path_logs }}/hyprland.log
 {% else %}
   exec $WM
 {% endif %}

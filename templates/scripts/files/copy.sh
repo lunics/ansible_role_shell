@@ -13,5 +13,3 @@ rsync \
   -h \
   --progress \
   $1 $2
-
-  ## ajouter un slash à la source $1/ ?

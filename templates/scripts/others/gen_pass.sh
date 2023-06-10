@@ -12,17 +12,17 @@ gen_pass (){
 
   printf $pass_generated | xclip -selection c
 
-  printf "\nPassword: $green%s$no_color ($2 characters) copied in the clipboard !\n\n" "$pass_generated"
+  printf "\nPassword: $green%s$no_color ($2 characters) copied in the clipboard !\n" "$pass_generated"
 }
 
 [ $# -eq 0 ] && gen_pass -cnsy $length
 
 if [ "$1" = "simple" ]; then
-  if [ "$2" -ge 1 ]; then
+  if [[ $2 -ge 1 ]]; then
     gen_pass -cns $1
   else
     gen_pass -cns $length
   fi
-elif [ "$1" -ge 1 ]; then
+elif [[ $1 -ge 1 ]]; then
   gen_pass -cnsy $1
 fi

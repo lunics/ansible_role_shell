@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/env bash
 
 # github: https://github.com/mrdotx/link-handler
 # date:   2022-06-22

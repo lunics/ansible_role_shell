@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/env bash
 
 git fetch && {
   git add .

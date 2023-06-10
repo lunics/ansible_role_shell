@@ -1,4 +1,3 @@
-
 ## run: showkey -a to get the right code
 bindkey -v                              # -v = enable vim mode; -e = disable vim mode
 bindkey "^[[1;5D" backward-word         # enable ctrl left arrow
@@ -21,3 +20,14 @@ bindkey -s '^w' 'exit\n'
 
 stty stop undef		                      # disable ctrl-s to avoid freeze terminal
 
+fzf-change-dirstack () {
+  local dir
+  print -rNC1 -- $dirstack |
+    fzf --read0 --print0 |
+    IFS= read -rd '' dir &&
+    cd -- $dir &&
+    zle -I
+}
+zle -N fzf-change-dirstack
+bindkey '^[d' fzf-change-dirstack         # ALT+P = fzf + dirs -v
+bindkey '^[f' fd                          # alt f = fd

@@ -1,14 +1,16 @@
-#!/bin/sh
+#!/bin/env bash
 
 if [ $# -eq 0 ]; then
-  cd $DOWNLOADS
+  /usr/bin/cd $DOWNLOADS
   exa -l --group-directories-first $DOWNLOADS
   echo "shell process refreshed from $PPID to $$"
   exec zsh -l
 elif [ "$1" == "l" ]; then
   exa -l --group-directories-first $DOWNLOADS
-elif [[ $(echo "$1" | grep "\.git$|github\.com") ]]; then
+elif [[ $(echo "$1" | grep "\.git$|github\.com") ]]; then   # if github url
   git clone --depth 1 $1
+elif [[ $(echo "${1}" | TODO) }}; then                      # if youtube url
+  yt-dlp -f "best[height>=720]" "${1}" -o '%(id)s.%(ext)s'
 elif [[ $(echo "$1" | grep ".tar.gz$") ]]; then
   wget $1
 else

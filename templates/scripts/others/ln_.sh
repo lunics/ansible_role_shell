@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/env bash
 
 if [ $# -eq 2 ]; then
   echo "ln -s <link> <dest>"

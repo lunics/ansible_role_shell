@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/env bash
 
 # called by .xprofile to remaps keys
 

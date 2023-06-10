@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/env bash
 
 NUM="${2:-5}"
 

@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/env bash
 
 homelab_path=$HOMELAB/ansible
 

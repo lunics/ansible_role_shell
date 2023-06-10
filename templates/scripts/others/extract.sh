@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/env bash
 
 [ -f $1 ] && {
   case $1 in
@@ -16,7 +16,7 @@
     *.7z)        7z x $1       ;;
     *)           echo "'$1' cannot be extracted via ex()" ;;
   esac
-  { echo "\nls -l $(pwd)\n"; exa -l --group-directories-first; } || ls -l
+  { echo -e "\nls -l $(pwd)\n"; exa -l --group-directories-first; } || ls -l
 } || {
   echo "'$1' is not a valid file"
 }

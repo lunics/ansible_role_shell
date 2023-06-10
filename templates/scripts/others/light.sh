@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/env bash
 
 sub_fct () {
   xrandr --output $(xrandr | grep " connected" | cut -f1 -d " ") --brightness $1

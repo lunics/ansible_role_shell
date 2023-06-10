@@ -15,7 +15,7 @@ scan_timeout      = 100
 command_timeout   = 1000
 
 format = '''
-[╭](bold green)$directory$sudo$git_branch$git_commit$git_state$git_metrics$package$jobs$fill$status$cmd_duration
+[╭](bold green)$directory$sudo$git_branch$git_commit$git_state$git_metrics$package$shlvl$jobs$fill$status$cmd_duration
 [╰](bold green)$username@$hostname   '''
 
 [fill]
@@ -51,6 +51,11 @@ show_milliseconds   = true
 format              = '[$branch(:$remote_branch)]($style) '
 symbol              = "branch "
 style 	            = 'bold purple'
+
+#[homelab_prompt]
+#command             = "homelab_prompt"
+#format 	            = "[($output )]($style)"
+#style 	            = "bold purple"
 
 [git_commit]
 format              = '[\($hash$tag\)]($style) '
@@ -103,6 +108,12 @@ sigint_symbol 	    = ''          # '🧱'
 signal_symbol 	    = ''          # '⚡'
 map_symbol          = true
 disabled            = false
+
+[shlvl]
+format      = "[$shlvl]($style)"
+style 	    = "bold yellow"
+threshold   = 3
+disabled    = false
 
 [jobs]
 format              = '[$symbol$number]($style) '

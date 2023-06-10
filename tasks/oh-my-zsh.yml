@@ -1,17 +1,17 @@
 - block:
-  - name: "[zsh] [stat] [{{ user.1.name }}] check if oh-my-zsh repo present"
+  - name: ({{ user.1.name }}) oh-my-zsh | stat > check if oh-my-zsh repo present
     stat:
       path: "{{ path_zsh }}/oh-my-zsh"
     register: _ohmyzsh
 
-  - name: "[zsh] [git] [{{ user.1.name }}] clone oh-my-zsh on {{ path_zsh }}"
+  - name: ({{ user.1.name }}) oh-my-zsh | git > clone oh-my-zsh on {{ path_zsh }}
     git:
       repo:  https://github.com/robbyrussell/oh-my-zsh
       dest:  "{{ path_zsh }}/oh-my-zsh"
       depth: 1
     when: not _ohmyzsh.stat.exists
 
-  - name: "[zsh] [file] [{{ user.1.name }}] remove oh-my-zsh/lib/{directories,grep-alias}"
+  - name: ({{ user.1.name }}) oh-my-zsh | file > remove oh-my-zsh/lib/{directories,grep-alias}
     file:
       path: "{{ path_zsh }}/oh-my-zsh/lib/{{ item }}"
       state: absent
@@ -19,10 +19,13 @@
       - directories.zsh
       - grep-alias.zsh
 
-  - name: "[zsh] [file] [{{ user.1.name }}] set permissions of oh-my-zsh"
+  - name: ({{ user.1.name }}) oh-my-zsh | file > set permissions of oh-my-zsh
     file:
-      path: "{{ path_zsh }}/oh-my-zsh"
-      mode: go-w
+      path:    "{{ path_zsh }}/oh-my-zsh"
+      mode:    go-w
       recurse: yes
 
-  tags: shell_ohmyzsh
+  when:
+    - shell == "zsh"
+    - oh-my-zsh | default(false)
+  tags: oh-my-zsh

@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/env bash
 
 list_repo=$(find . -maxdepth 2 -name .git)
 

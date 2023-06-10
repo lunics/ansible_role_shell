@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/env bash
 
 current_brightness=$(xrandr --verbose | grep -m 1 -i brightness | cut -f2 -d ' ')
 

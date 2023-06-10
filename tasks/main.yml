@@ -1,29 +1,27 @@
 - block:
-  - name: include_vars > shell/vars/*
-    include_vars:
-      dir: vars
-      extensions: ['yml']
-    tags: exports, aliases
+  - include_tasks: for_each_user.yml
+    loop: "{{ user }}"
+    loop_control:
+      loop_var: i_user
 
   - include_tasks: shell.yml
     loop: "{{ user }}"
     loop_control:
-      loop_var: _user
+      loop_var: i_user
 
-  - include_tasks: exports_aliases.yml
+  - include_tasks: exports_and_aliases.yml
     loop: "{{ user }}"
     loop_control:
-      loop_var: _user
-    tags: exports, aliases
+      loop_var: i_user
+    tags:
 
-  - ansible.builtin.import_tasks: zsh.yml
-  # - ansible.builtin.import_tasks: bash.yml      ## TODO
+  - import_tasks: zsh.yml
 
-  - ansible.builtin.import_tasks: prompt.yml
+  - import_tasks: bash.yml
 
-  - ansible.builtin.import_tasks: history.yml
+  - import_tasks: prompt.yml
 
-  # - include_tasks: bash.yml
+  - import_tasks: history.yml
 
   become_user: "{{ default_user }}"
-  tags: shell
+  tags: shell, exports, aliases

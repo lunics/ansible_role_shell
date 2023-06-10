@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/env bash
 
 ## Ne pas répéter le: sudo iwlist wlp2s0 scan
 ## Ajouter un ncurse pour choisir entre les wifi dispo

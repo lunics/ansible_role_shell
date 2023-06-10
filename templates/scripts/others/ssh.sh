@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/env bash
 
 if [ $# -eq 0 ]; then
   /usr/bin/sshs

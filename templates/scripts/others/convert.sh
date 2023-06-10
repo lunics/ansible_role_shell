@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/env bash
 
 base_name=${1%.*}             # get base file name of $1
 ext_src=${1#$base_name.}      # get extension of $1

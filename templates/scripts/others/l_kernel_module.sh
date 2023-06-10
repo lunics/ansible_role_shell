@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/env bash
 
 case "$#" in
   0) lsmod ;;

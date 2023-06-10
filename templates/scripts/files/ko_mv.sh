@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/env bash
 
 # rsync --remove-source-files ne supprime que les fichiers source et laisse les dossiers source vides
 rsync -avzh --progress $1 $2
