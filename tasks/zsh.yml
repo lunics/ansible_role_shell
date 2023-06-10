@@ -79,4 +79,4 @@
 
   # - include: oh-my-zsh.yml
 
-  tags: shell_zsh, zsh
+  tags: zsh

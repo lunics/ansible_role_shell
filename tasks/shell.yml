@@ -1,89 +1,61 @@
 - block:
+  - name: shell | user > check user exists
+    user:
+      name:  "{{ i_user.name }}"
+      state: present
+
+  - name: shell | file > create {{ path_shell }} dir
+    file:
+      path:  "{{ path_shell }}"
+      state: directory
+      mode:  0700
+
   - block:
-    - name: shell | {{ i_user.name }} | file > create {{ path_shell }} dir
+    - name: shell | file > create {{ path_bin }} dir
       file:
-        path:  "{{ path_shell }}"
-        state: directory
-        mode:  0700
-
-    - block:
-      - name: shell | file > create {{ path_bin }} dir
-        file:
-          path:  "{{ path_bin }}"
-          state: directory
-
-      - name: shell | template > deploy scripts on {{ path_bin }}
-        template:
-          src:  "{{ item }}"
-          dest: "{{ path_bin + '/' + (item | basename | regex_replace('\\.*[a-z0-9]{1,3}$', '')) }}"
-          mode: 0700
-        with_fileglob:
-          - ../templates/scripts/others/*
-          - ../templates/scripts/files/*
-          - ../templates/scripts/fzf/*
-          - ../templates/scripts/git/*
-          - ../templates/scripts/network/*
-          - ../templates/scripts/packages/*
-
-      tags: shell_bin_files
-
-    - name: shell | {{ i_user.name }} | template > deploy icons.sh, inputrc on {{ path_shell }}
-      template:
-        src:  "{{ item }}.j2"
-        dest: "{{ path_shell }}/{{ item }}"
-        mode: 0600
-      loop:
-        - icons.sh
-        - sources.sh
-        - inputrc
-
-    - name: shell | {{ i_user.name }} | file > create shell functions dir
-      file:
-        path: "{{ path_shell }}/functions"
+        path:  "{{ path_bin }}"
         state: directory
 
-    - name: shell | {{ i_user.name }} | template > sourced shell functions
+    - name: shell | template > deploy scripts on {{ path_bin }}
       template:
         src:  "{{ item }}"
-        dest: "{{ path_shell }}/functions/{{ item | basename }}"
+        dest: "{{ path_bin + '/' + (item | basename | regex_replace('\\.*[a-z0-9]{1,3}$', '')) }}"
+        mode: 0700
       with_fileglob:
-        - ../templates/scripts/sourced/*
+        - ../templates/scripts/others/*
+        - ../templates/scripts/files/*
+        - ../templates/scripts/fzf/*
+        - ../templates/scripts/git/*
+        - ../templates/scripts/network/*
+        - ../templates/scripts/packages/*
 
-    - name: shell | git > clone git-subrepo
-      git:
-        repo: https://github.com/ingydotnet/git-subrepo
-        dest: "{{ path_local }}/repo/git-subrepo"
+    tags: shell_bin_files
 
-    when: i_user.name != root
+  - name: shell | {{ i_user.name }} | template > deploy icons.sh, inputrc on {{ path_shell }}
+    template:
+      src:  "{{ item }}.j2"
+      dest: "{{ path_shell }}/{{ item }}"
+      mode: 0600
+    loop:
+      - icons.sh
+      - sources.sh
+      - inputrc
+
+  - name: shell | {{ i_user.name }} | file > create shell functions dir
+    file:
+      path: "{{ path_shell }}/functions"
+      state: directory
+
+  - name: shell | {{ i_user.name }} | template > sourced shell functions
+    template:
+      src:  "{{ item }}"
+      dest: "{{ path_shell }}/functions/{{ item | basename }}"
+    with_fileglob:
+      - ../templates/scripts/sourced/*
+
+  # - name: shell | git > clone git-subrepo
+  #   git:
+  #     repo: https://github.com/ingydotnet/git-subrepo
+  #     dest: "{{ path_local }}/repo/git-subrepo"
 
   become_user: "{{ _user.name }}"
-
-# - block:
-#   - name: "[file] [{{ user.0.name }}] create {{ path_shell }}"
-#     file:
-#       path:  "{{ path_shell }}"
-#       state: directory
-#       mode:  0700
-#       # mode:  "0750"            ## essayer de le réduire
-
-#   ## supprimer exports_root.j2 et aliases_root.j2 ?
-#   - name: "[template] [{{ user.0.name }}] copy exports, aliases on {{ path_shell }}"
-#     loop:
-#       - exports
-#       - aliases
-#     template:
-#       src:  "{{ item }}.j2"
-#       dest: "{{ path_shell }}/{{ item }}.sh"
-#       mode: 0600
-#       # mode: "0640"
-
-#   - name: "[template] [{{ user.0.name }}] copy profile.zsh on $HOME/.zshrc"
-#     template:
-#       src:  profile_root.j2
-#       # dest: "{{ path_shell }}/profile.sh"
-#       dest: "$HOME/.zshrc"
-#       mode: 0600
-#       # mode: "0640"            ## essayer réduire en 600 max
-
-#   become: yes
-#   becomei_user: "{{ user.0.name }}"

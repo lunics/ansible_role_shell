@@ -1,19 +1,10 @@
 - block:
-  - include_tasks: for_each_user.yml
-    loop: "{{ user }}"
-    loop_control:
-      loop_var: i_user
-
   - include_tasks: shell.yml
     loop: "{{ user }}"
     loop_control:
       loop_var: i_user
 
   - include_tasks: exports_and_aliases.yml
-    loop: "{{ user }}"
-    loop_control:
-      loop_var: i_user
-    tags:
 
   - import_tasks: zsh.yml
 
@@ -22,6 +13,11 @@
   - import_tasks: prompt.yml
 
   - import_tasks: history.yml
+
+  - name: banner | Configure banner welcome file
+    when: (ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu') and shell_cygwin_enabled == false
+    copy: src=11-welcome dest=/etc/update-motd.d/11-welcome owner={{ shell_owner }} group={{ shell_group }} mode=0755
+
 
   become_user: "{{ default_user }}"
   tags: shell, exports, aliases
