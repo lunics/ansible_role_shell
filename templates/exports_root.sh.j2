@@ -1,5 +1,0 @@
-#!/bin/sh
-
-{% for item in exports.root | dict2items(key_name="export", value_name="value") %}
-  export {{ item.export }}="{{ item.value }}"
-{% endfor %}

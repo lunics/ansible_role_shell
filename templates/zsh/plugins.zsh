@@ -16,6 +16,28 @@ zplug_fct (){
   zplug "maximux13/zsh-auto-source-file"        # autosource .zshrc ## a tester
 
   zplug load       # source plugins and add commands to $PATH
+
+  # git
+  # kubectl
+  # helm
+  # zsh-interactive-cd
+  # command-not-found
+  # web-search
+  # # ddg ma recherch ou google ma recher
+  # taskwarrior
+  # # sudo - KO
+  # # sudo          2 esc to insert sudo
+  # history
+  # # h = history, hs = history | grep , hsi = hs case-insensitive
+  # extract
+  # emoji
+  # emoji-clock
+  # # battery
+  # # autojump      aur/autojump
+  # # colorize      aur/go-chroma
+  # # zsh-navigation-tools
+  # # terraform
+)
 }
 # zinit light zdharma/fast-syntax-highlighting
 # zinit light zsh-users/zsh-autosuggestions

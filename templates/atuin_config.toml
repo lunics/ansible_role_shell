@@ -1,4 +1,3 @@
-
 # DB location
 db_path = "{{ path_share_cloud }}/atuin/history.db"
 

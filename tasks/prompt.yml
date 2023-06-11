@@ -1,11 +1,9 @@
 - block:
   - name: prompt | package > install dependencies
     package:
-      name:       "{{ item }}"
+      name: "{{ item }}"
     loop:
       - starship
-      # - zsh-theme-powerlevel10k
-      # - spaceship-prompt
 
   - name: prompt | file > create starship config dir
     file:

@@ -30,15 +30,3 @@
       - "{{ exports_xdg    }}"
       - "{{ exports_others }}"
     tags: exports
-
-  when: _user.name != root
-
-- block:
-  - name: shell | {{ _user.name }} | blockinfile > generate exports
-    blockinfile:
-      path:   /root/
-      create: yes
-      marker: "# {mark} {{ item.name }}"
-      block: |
-
-  when: _user.name != root

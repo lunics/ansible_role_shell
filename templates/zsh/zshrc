@@ -6,8 +6,7 @@ source $SHELLRC/sources.sh
 source $ZSHRC/history.zsh
 # source $ZSHRC/prompt.zsh
 source $ZSHRC/options.zsh
-source $SHELLRC/zsh/shortcuts.zsh
-source $SHELLRC/zsh/exports.zsh
+source $SHELLRC/zsh/bindkeys.zsh
 # source $SHELLRC/zsh/reveal_alias.zsh
 # source $SHELLRC/zsh/oh-my-zsh.zsh
 # source $SHELLRC/zsh/plugins.zsh
@@ -80,14 +79,5 @@ echo -ne '\e[5 q'                           # Use beam shape cursor on startup.
 preexec() { echo -ne '\e[5 q' ;}            # Use beam shape cursor for each new prompt.
 # END
 
-## remplacer par fzf
-# enable vim navigation dans la liste des arguments possible de l'autocompletion
-# dépend de zmodload zsh/complist
-bindkey -M menuselect '^h' vi-backward-char
-bindkey -M menuselect '^k' vi-up-line-or-history
-bindkey -M menuselect '^l' vi-forward-char
-bindkey -M menuselect '^j' vi-down-line-or-history
-
 # enable colors when typing in the command line, must be at the end of zshrc
 source /usr/share/zsh/plugins/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh 2> /dev/null
-

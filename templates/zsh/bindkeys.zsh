@@ -8,7 +8,21 @@ bindkey "^[^?" backward-kill-word       # alt backspace = delete word before
 bindkey -s '^o' 'lfcd\n'                # ctrl o = file explorer with lf
 bindkey -s '^w' 'exit\n'
 ## ctrl f  = broot                             # find dir or file
+
 #old bindkey -s '^f' 'cd "$(dirname "$(fzf)")"\n'
+bindkey -s '^f' 'fd\n'                  # ctrl f = fd + ranger
+
+bindkey '^[[P'  delete-char             ## a tester
+bindkey -v '^?' backward-delete-char    ## a tester
+
+## a remplacer par fzf
+# enable vim navigation dans la liste des arguments possible de l'autocompletion
+# dépend de zmodload zsh/complist
+# old bindkey -M menuselect 'h' vi-backward-char
+bindkey -M menuselect '^h' vi-backward-char
+bindkey -M menuselect '^k' vi-up-line-or-history
+bindkey -M menuselect '^l' vi-forward-char
+bindkey -M menuselect '^j' vi-down-line-or-history
 
 # autoload edit-command-line; zle -N edit-command-line
 # bindkey '^e' edit-command-line          # ctrl e = edit current command line in vim

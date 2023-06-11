@@ -1,5 +1,5 @@
 - block:
-  - name: history | file > mkdir atuin config & cloud dirs
+  - name: history | file > create atuin config & cloud dirs
     file:
       path:  "{{ item }}/atuin"
       state: directory
@@ -14,9 +14,9 @@
       - atuin
     become_user: "{{ root }}"
 
-  - name: history | template > generate atuin config
+  - name: history | template > generate atuin config file
     template:
-      src:  config.toml.j2
+      src:  atuin_config.toml
       dest: "{{ path_config }}/atuin/config.toml"
 
   tags: history, atuin

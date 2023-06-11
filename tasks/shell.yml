@@ -59,3 +59,4 @@
   #     dest: "{{ path_local }}/repo/git-subrepo"
 
   become_user: "{{ _user.name }}"
+  when: i_user.shell != "/usr/bin/false"

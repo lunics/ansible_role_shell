@@ -20,14 +20,9 @@
       path:   "{{ path_exports }}"
       marker: "# {mark} zsh"
       block: |
-        {% for item in zsh_exports | dict2items(key_name="export", value_name="value") %}
+        {% for item in exports_zsh | dict2items(key_name="export", value_name="value") %}
           export {{ item.export }}={{ item.value }}
         {% endfor %}
-    vars:
-      zsh_exports:
-        ZSHRC:    $SHELLRC/zsh
-        ZSH:      $ZSHRC/oh-my-zsh
-        ZDOTDIR:  $ZSHRC
 
   ## A DELETE IS OK quand le fichier n'existe pas
   # - name: "[zsh] [stat] [{{ user.1.name }}] check if .cache/zsh/history exists"
@@ -77,6 +72,6 @@
       depth: 1
     when: not _zplug.stat.exists
 
-  # - include: oh-my-zsh.yml
+  - import_tasks: oh-my-zsh.yml
 
   tags: zsh
