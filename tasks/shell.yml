@@ -10,26 +10,26 @@
       state: directory
       mode:  0700
 
-  - block:
-    - name: shell | file > create {{ path_bin }} dir
-      file:
-        path:  "{{ path_bin }}"
-        state: directory
+  - name: shell | file > create {{ path_bin }} dir
+    file:
+      path:  "{{ path_bin }}"
+      state: directory
+    tags: local_bin, scripts
 
-    - name: shell | template > deploy scripts on {{ path_bin }}
-      template:
-        src:  "{{ item }}"
-        dest: "{{ path_bin + '/' + (item | basename | regex_replace('\\.*[a-z0-9]{1,3}$', '')) }}"
-        mode: 0700
-      with_fileglob:
-        - ../templates/scripts/others/*
-        - ../templates/scripts/files/*
-        - ../templates/scripts/fzf/*
-        - ../templates/scripts/git/*
-        - ../templates/scripts/network/*
-        - ../templates/scripts/packages/*
+  - name: shell | template > deploy scripts on {{ path_bin }}
+    template:
+      src:  "{{ item }}"
+      dest: "{{ path_bin + '/' + (item | basename | regex_replace('\\.*[a-z0-9]{1,3}$', '')) }}"
+      mode: 0700
+    with_fileglob:
+      - ../templates/scripts/others/*
+      - ../templates/scripts/files/*
+      - ../templates/scripts/fzf/*
+      - ../templates/scripts/git/*
+      - ../templates/scripts/network/*
+      - ../templates/scripts/packages/*
+    tags: local_bin, scripts
 
-    tags: shell_bin_files
 
   - name: shell | {{ i_user.name }} | template > deploy icons.sh, inputrc on {{ path_shell }}
     template:

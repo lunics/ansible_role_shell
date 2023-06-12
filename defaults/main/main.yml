@@ -1,0 +1,25 @@
+shell_aliases: []
+  # - owner: "{{ default_user }}"
+  #   list:
+  #     - "{{ aliases_1 }}"
+  #     - "{{ aliases_2 }}"
+  # - owner: root
+  #   list:
+  #     - "{{ root_aliases }}"
+
+shell_exports: []
+  # - owner: "{{ default_user }}"
+  #   list:  "{{ exports }}"
+  # - owner: root
+  #   list:
+  #     - "{{ root_exports1 }}"
+  #     - "{{ root_exports2 }}"
+
+shell_scripts: []
+  # - owner: "{{ default_user }}"
+  #   paths:
+  #     - "{{ inventory_dir }}/files/scripts"
+  #     - "{{ inventory_dir }}/host_vars/{{ hostname }}/scripts"
+  # - owner: root
+  #   paths:
+  #     - "{{ inventory_dir }}/files/scripts"

@@ -1,20 +1,11 @@
 - block:
-  - name: shell | {{ _user.name }} | template > generate aliases.sh
-    template:
-      src:  "{{ item }}.j2"
-      dest: "{{ path_shell }}/{{ item }}"
-      mode: 0600
-    loop:
-      - aliases.sh
-    tags: aliases
-
-  - name: shell | {{ _user.name }} | blockinfile > generate exports
-    ansible.builtin.blockinfile:
+  - name: shell | {{ item.name }} | blockinfile > generate exports
+    blockinfile:
       path:   "{{ path_exports }}"
-      create: yes
-      marker: "# {mark} {{ item.name }}"
+      create: true
+      marker: "# {mark} {{ _export.name }}"
       block: |
-        {% for export in item | dict2items(key_name="key", value_name="value") %}
+        {% for export in _export | dict2items(key_name="key", value_name="value") %}
           {%- if export.key != "name" %}
             {%- if export.value | regex_search("\$\(") +%}  {# when item.value start by $(command) then don't add quotes #}
         export {{ export.key }}={{ export.value }}
@@ -23,10 +14,14 @@
             {%- endif %}
           {%- endif %}
         {% endfor %}
-    with_items: #"
+    loop: #" ## a tester        ne peut sûrement fonctionner qu'avec with_items
       - "{{ exports_path   }}"
       - "{{ exports_apps   }}"
       - "{{ exports_gui    }}"
       - "{{ exports_xdg    }}"
       - "{{ exports_others }}"
-    tags: exports
+    loop_control:
+      loop_var:  _export
+
+  become_user: "{{ item.name }}"
+  tags: exports

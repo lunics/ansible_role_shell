@@ -1,10 +1,12 @@
 - block:
   - include_tasks: shell.yml
     loop: "{{ user }}"
-    loop_control:
-      loop_var: i_user
 
-  - include_tasks: exports_and_aliases.yml
+  - include_tasks: exports.yml
+    loop: "{{ user }}"
+
+  - include_tasks: aliases.yml
+    loop: "{{ user }}"
 
   - import_tasks: zsh.yml
 
@@ -17,7 +19,6 @@
   - name: banner | Configure banner welcome file
     when: (ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu') and shell_cygwin_enabled == false
     copy: src=11-welcome dest=/etc/update-motd.d/11-welcome owner={{ shell_owner }} group={{ shell_group }} mode=0755
-
 
   become_user: "{{ default_user }}"
   tags: shell, exports, aliases

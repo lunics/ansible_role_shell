@@ -1,0 +1,15 @@
+- block:
+  - name: shell | {{ _user.name }} | template > generate aliases.sh
+    template:
+      src:  "{{ item }}.j2"
+      dest: "{{ path_shell }}/{{ item }}"
+      mode: 0600
+    loop: "{{ aliases }}"
+    loop_control:
+      loop_var:  _export
+
+  become_user: "{{ item.name }}"
+  tags: exports
+    tags: aliases
+
+
