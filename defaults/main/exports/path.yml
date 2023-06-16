@@ -1,0 +1,11 @@
+exports_path:
+  name:           path
+  CONFIG:         "$HOME/{{ path_config }}"
+  SHELLRC:        "$HOME/{{ path_shell  }}"
+  LOCAL:          "$HOME/{{ path_local  }}"
+  CACHE:          "$HOME/{{ path_cache  }}"
+  SCRIPTS:        "$HOME/{{ path_scripts }}"
+  BIN:            "$HOME/{{ path_bin     }}"
+  SHARE:          $LOCAL/share
+  DOWNLOADS:      ~/downloads
+  CLOUD:          ~/cloud

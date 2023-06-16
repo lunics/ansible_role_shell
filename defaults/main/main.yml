@@ -1,32 +1,46 @@
+default_user: ""        # REQUIRED
+
 shell_aliases: []
   # - owner: "{{ default_user }}"
   #   list:
-  #     - "{{ aliases_1 }}"
-  #     - "{{ aliases_2 }}"
+  #     - "{{ list_aliases }}"
   # - owner: root
   #   list:
-  #     - "{{ root_aliases }}"
+  #     - "{{ list_aliases }}"
 
 shell_exports: []
   # - owner: "{{ default_user }}"
-  #   list:  "{{ exports }}"
+  #   list:
+  #     - "{{ exports_path }}"
+  #     - "{{ exports_xdg  }}"
+
   # - owner: root
   #   list:
-  #     - "{{ root_exports1 }}"
-  #     - "{{ root_exports2 }}"
+  #     - "{{ exports_path }}"
+  #     - "{{ exports_xdg  }}"
 
 shell_scripts: []
   # - owner: "{{ default_user }}"
   #   src:
-  #     - "{{ inventory_dir }}/files/scripts"
-  #     - "{{ inventory_dir }}/host_vars/{{ hostname }}/scripts"
-  #   dest:  "{{ path_bin }}"
+  #     - "{{ path_files }}/scripts/files"
+  #     - "{{ path_files }}/scripts/packages"
+  #     - "{{ path_files }}/scripts/others"
+  #     - "{{ path_files }}/scripts/network"
+  #     - "{{ path_files }}/scripts/git"
+  #   dest: "{{ path_bin }}"
   # - owner: root
   #   src:
-  #     - "{{ inventory_dir }}/files/scripts"
-  #   dest:  /usr/local/bin
+  #     - "{{ path_files }}/scripts/files"
+  #   dest:  "{{ path_bin }}"
 
+shell_functions: []
+  # - owner: "{{ default_user }}"
+  #   src:
+  #     - "{{ path_files }}/scripts/functions"
+  # - owner: root
+  #   src:
+  #     - "{{ path_files }}/scripts/functions"
 
 gui_enable:     false
-display_server: []
-compositor:     []
+display_server: ""
+compositor:     ""

@@ -1,5 +1,5 @@
-path_home:   "{{ lookup('env','HOME') }}"
-path_dot:    "{{ path_home   }}/.dot"
+path_home:   $HOME
+path_dot:    ".dot"
 path_config: "{{ path_dot    }}/config"
 path_local:  "{{ path_dot    }}/local"
 path_cache:  "{{ path_dot    }}/cache"
@@ -7,3 +7,4 @@ path_shell:  "{{ path_config }}/shell"
 path_zsh:    "{{ path_shell  }}/zsh"
 path_bin:    "{{ path_local  }}/bin"
 path_history: ""
+path_files:   "{{ inventory_dir }}/files"
