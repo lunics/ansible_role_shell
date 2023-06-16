@@ -1,7 +1,8 @@
 - block:
   - name: shell | {{ item.name }} | blockinfile > generate exports
     blockinfile:
-      path:   "{{ path_exports }}"
+      path:  "{{ ('/root' if item.owner == 'root' else ('/home/' + item.owner)) + path_exports }}"
+      owner: "{{ item
       create: true
       marker: "# {mark} {{ _export.name }}"
       block: |
@@ -14,14 +15,21 @@
             {%- endif %}
           {%- endif %}
         {% endfor %}
-    loop: #" ## a tester        ne peut sûrement fonctionner qu'avec with_items
-      - "{{ exports_path   }}"
-      - "{{ exports_apps   }}"
-      - "{{ exports_gui    }}"
-      - "{{ exports_xdg    }}"
-      - "{{ exports_others }}"
-    loop_control:
-      loop_var:  _export
+    #"
+    with_subelements:
+      - "{{ shell_exports }}"
+      - list
+      - skip_missing: true
+
+    # loop: #"
+    #   - "{{ exports_path   }}"
+    #   - "{{ exports_apps   }}"
+    #   - "{{ exports_gui    }}"
+    #   - "{{ exports_xdg    }}"
+    #   - "{{ exports_others }}"
+    # loop_control:
+    #   loop_var:  _export
+
 
   become_user: "{{ item.name }}"
   tags: exports

@@ -1,62 +1,29 @@
 - block:
   - name: shell | user > check user exists
     user:
-      name:  "{{ i_user.name }}"
+      name:  "{{ item.name }}"
       state: present
+    loop: "{{ user }}"
 
-  - name: shell | file > create {{ path_shell }} dir
+  - name: shell | file > create user shell dir
     file:
-      path:  "{{ path_shell }}"
+      path:  "{{ ('/root' if item.name == 'root' else ('/home/' + item.name)) + path_shell }}"
+      owner: "{{ item.name }}"
       state: directory
       mode:  0700
+    loop: "{{ user }}"
 
-  - name: shell | file > create {{ path_bin }} dir
-    file:
-      path:  "{{ path_bin }}"
-      state: directory
-    tags: local_bin, scripts
+  # - name: shell | {{ i_user.name }} | template > deploy icons.sh, inputrc on {{ path_shell }}
+  #   template:
+  #     src:  "{{ item }}.j2"
+  #     dest: "{{ path_shell }}/{{ item }}"
+  #     mode: 0600
+  #   loop:
+  #     - icons.sh
+  #     - sources.sh
+  #     - inputrc
 
-  - name: shell | template > deploy scripts on {{ path_bin }}
-    template:
-      src:  "{{ item }}"
-      dest: "{{ path_bin + '/' + (item | basename | regex_replace('\\.*[a-z0-9]{1,3}$', '')) }}"
-      mode: 0700
-    with_fileglob:
-      - ../templates/scripts/others/*
-      - ../templates/scripts/files/*
-      - ../templates/scripts/fzf/*
-      - ../templates/scripts/git/*
-      - ../templates/scripts/network/*
-      - ../templates/scripts/packages/*
-    tags: local_bin, scripts
-
-
-  - name: shell | {{ i_user.name }} | template > deploy icons.sh, inputrc on {{ path_shell }}
-    template:
-      src:  "{{ item }}.j2"
-      dest: "{{ path_shell }}/{{ item }}"
-      mode: 0600
-    loop:
-      - icons.sh
-      - sources.sh
-      - inputrc
-
-  - name: shell | {{ i_user.name }} | file > create shell functions dir
-    file:
-      path: "{{ path_shell }}/functions"
-      state: directory
-
-  - name: shell | {{ i_user.name }} | template > sourced shell functions
-    template:
-      src:  "{{ item }}"
-      dest: "{{ path_shell }}/functions/{{ item | basename }}"
-    with_fileglob:
-      - ../templates/scripts/sourced/*
-
-  # - name: shell | git > clone git-subrepo
-  #   git:
-  #     repo: https://github.com/ingydotnet/git-subrepo
-  #     dest: "{{ path_local }}/repo/git-subrepo"
-
-  become_user: "{{ _user.name }}"
-  when: i_user.shell != "/usr/bin/false"
+  # # - name: shell | git > clone git-subrepo
+  # #   git:
+  # #     repo: https://github.com/ingydotnet/git-subrepo
+  # #     dest: "{{ path_local }}/repo/git-subrepo"

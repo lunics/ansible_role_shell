@@ -17,9 +17,11 @@ shell_exports: []
 
 shell_scripts: []
   # - owner: "{{ default_user }}"
-  #   paths:
+  #   src:
   #     - "{{ inventory_dir }}/files/scripts"
   #     - "{{ inventory_dir }}/host_vars/{{ hostname }}/scripts"
+  #   dest:  "{{ path_bin }}"
   # - owner: root
-  #   paths:
+  #   src:
   #     - "{{ inventory_dir }}/files/scripts"
+  #   dest:  /usr/local/bin
