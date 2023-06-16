@@ -7,13 +7,18 @@
 
   - name: prompt | file > create starship config dir
     file:
-      path:  "{{ path_config }}/starship"
+      path:  "{{ ('/root' if item.name == 'root' else ('/home/' + item.name)) + path_config }}/starship"
+      owner: "{{ item.name }}"
+      group: "{{ item.group | default(item.name) }}"
       state: directory
+    loop: "{{ user }}"
 
   - name: prompt | template > generate starship config file
     template:
-      src:  starship_config.toml.j2
-      dest: "{{ path_config }}/starship/config.toml"
-    tags: starship_template
+      src:  starship_config.toml
+      dest: "{{ ('/root' if item.name == 'root' else ('/home/' + item.name)) + path_config }}/starship/config.toml"
+      owner: "{{ item.name }}"
+      group: "{{ item.group | default(item.name) }}"
+    loop: "{{ user }}"
 
-  tags: prompt, starship_template
+  tags: prompt, starship

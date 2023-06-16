@@ -1,0 +1,17 @@
+- block:
+  - name: motd | template > deploy service unit and script motd
+    template:
+      src:  "motd/{{ item.src }}.j2"
+      dest: "{{ item.dest }}/{{ item.src }}"
+    loop:
+      - { src: update_motd.service, dest: /etc/systemd/system }
+      - { src: update_motd.sh,      dest: /usr/bin            }
+
+  - name: motd | service > start and enable motd
+    service:
+      name:    update_motd.service
+      state:   started
+      enabled: yes
+
+  when: motd | default(false)
+  tags: motd

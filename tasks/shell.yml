@@ -13,6 +13,7 @@
       mode:  0700
     loop: "{{ user }}"
 
+  # old
   # - name: shell | {{ i_user.name }} | template > deploy icons.sh, inputrc on {{ path_shell }}
   #   template:
   #     src:  "{{ item }}.j2"
@@ -22,8 +23,3 @@
   #     - icons.sh
   #     - sources.sh
   #     - inputrc
-
-  # # - name: shell | git > clone git-subrepo
-  # #   git:
-  # #     repo: https://github.com/ingydotnet/git-subrepo
-  # #     dest: "{{ path_local }}/repo/git-subrepo"
