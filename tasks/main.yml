@@ -9,13 +9,15 @@
 
   - import_tasks: aliases.yml
 
+  - import_tasks: profile.yml
+
   # - import_tasks: zsh.yml
 
-  # - import_tasks: bash.yml
+  - import_tasks: bash.yml
 
   - import_tasks: prompt.yml
 
-  # - import_tasks: history.yml
+  - import_tasks: history.yml
 
   # - import_tasks: motd.yml
   # - name: banner | Configure banner welcome file

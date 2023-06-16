@@ -1,22 +1,57 @@
 - block:
-  - name: history | file > create atuin config & cloud dirs
-    file:
-      path:  "{{ item }}/atuin"
-      state: directory
-    with_items:
-      - "{{ path_share_cloud }}"
-      - "{{ path_config }}"
-
   - name: history | package > install dependencies
     package:
       name: "{{ item }}"
     loop:
       - atuin
-    become_user: "{{ root }}"
+
+  - name: history | file > create atuin config dir
+    file:
+      path:  "{{ ('/root' if item.name == 'root' else ('/home/' + item.name)) + path_config }}/atuin"
+      owner: "{{ item.name }}"
+      group: "{{ item.group | default(item.name) }}"
+      state: directory
+    loop: "{{ user }}"
 
   - name: history | template > generate atuin config file
     template:
-      src:  atuin_config.toml
-      dest: "{{ path_config }}/atuin/config.toml"
+      src:   config_atuin.toml
+      dest:  "{{ ('/root' if item.name == 'root' else ('/home/' + item.name)) + path_config }}/atuin/config.toml"
+      owner: "{{ item.name }}"
+      group: "{{ item.group | default(item.name) }}"
+    loop: "{{ user }}"
+
+  ## create symlink between cache/atuin and path_history
+  # with_items:
+  #   - "{{ path_share_cloud }}"
+
+  ## A DELETE IS OK quand le fichier n'existe pas
+  # - name: "[zsh] [stat] [{{ user.1.name }}] check if .cache/zsh/history exists"
+  #   stat:
+  #     path: "$HOME/.cache/zsh/history"
+  #   register: _zsh_history
+
+  # superseeded by atuin
+  #- name: zsh | file > create zsh file history
+  #  file:
+  #    path: "$HOME/.cache/{{ item.path }}"
+  #    state: "{{ item.state }}"
+  #  loop:
+  #    - { path: zsh,         state: directory }
+  #    - { path: zsh/history, state: touch     }
+  #    #old: - { path: zsh/history, state: file }
+  #  # when: not _zsh_history.stat.exists
+
+  - name: history | blockinfile > add exports
+    blockinfile:
+      path:  "{{ ('/root' if item.name == 'root' else ('/home/' + item.name)) + '/' + path_exports }}"
+      marker: "# {mark} shell history"
+      block: |
+        export HISTFILE="~/{{ path_cache }}/bash_history"
+        export HISTFILESIZE=10000
+        export HISTTIMEFORMAT="%F %T "
+        export HISTCONTROL=ignoredups
+    # when: item.shell is not defined or item.shell == "bash"
+    loop: "{{ user }}"
 
   tags: history, atuin

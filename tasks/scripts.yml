@@ -1,7 +1,7 @@
 - block:
   - name: scripts | file > create user local/bin dir
     file:
-      path:  "{{ ('/root' if item.owner == 'root' else ('/home/' + item.owner)) + item.dest }}"
+      path:  "{{ ('/root' if item.owner == 'root' else ('/home/' + item.owner)) + '/' + item.dest }}"
       state: directory
       mode:  0700
     loop: "{{ shell_scripts }}"
@@ -9,7 +9,7 @@
   - name: scripts | copy > deploy scripts on local/bin
     copy:
       src:   "{{ item[1] }}/"
-      dest:  "{{ ('/root' if item[0].owner == 'root' else ('/home/' + item[0].owner)) + item[0].dest }}"
+      dest:  "{{ ('/root' if item[0].owner == 'root' else ('/home/' + item[0].owner)) + '/' + item[0].dest }}"
     with_subelements:
       - "{{ shell_scripts }}"
       - src
@@ -17,7 +17,7 @@
 
   - name: scripts | file > change user/group and make scripts executables
     file:
-      path:  "{{ ('/root' if item[0].owner == 'root' else ('/home/' + item[0].owner)) + item[0].dest }}"
+      path:  "{{ ('/root' if item[0].owner == 'root' else ('/home/' + item[0].owner)) + '/' + item[0].dest }}"
       owner: "{{ item[0].owner }}"
       group: "{{ item[1].group | default(item[1].name) }}"
       mode:  u+x

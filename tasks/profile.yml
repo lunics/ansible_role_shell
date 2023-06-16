@@ -1,0 +1,13 @@
+- block:
+  - name: profile | template > generate shell profile
+    template:
+      src:  profile.sh
+      dest:  "{{ ('/root' if item.name == 'root'
+                 else ('/home/' + item.name)) +
+                 ('/.zshenv' if (item.shell is defined and item.shell == 'zsh')
+                 else '/.profile') }}"
+      owner: "{{ item.name }}"
+      group: "{{ item.group | default(item.name) }}"
+    loop: "{{ user }}"
+
+  tags: shell_profile

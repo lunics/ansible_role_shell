@@ -1,4 +1,11 @@
 - block:
+  - name: package > intall dependencies
+    package:
+      name: "{{ item }}"
+    with_items:
+      - exa
+      - bat
+
   - name: shell | user > check user exists
     user:
       name:  "{{ item.name }}"
@@ -7,7 +14,7 @@
 
   - name: shell | file > create user shell dir
     file:
-      path:  "{{ ('/root' if item.name == 'root' else ('/home/' + item.name)) + path_shell }}"
+      path:  "{{ ('/root' if item.name == 'root' else ('/home/' + item.name)) + '/' + path_shell }}"
       owner: "{{ item.name }}"
       state: directory
       mode:  0700

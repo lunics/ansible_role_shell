@@ -25,3 +25,8 @@ shell_scripts: []
   #   src:
   #     - "{{ inventory_dir }}/files/scripts"
   #   dest:  /usr/local/bin
+
+
+gui_enable:     false
+display_server: []
+compositor:     []

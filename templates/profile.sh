@@ -2,19 +2,19 @@
 
 {# if a $PATH/bin is broken, xorg can fail to boot  #}
 {# needed it to load xprofile startup programs + i3 volume and light shortcut #}
-source {{ path_exports }}
-export PATH=$(echo -n $PATH | awk -v RS=: '!($0 in a) {a[$0]; printf("%s%s", length(a) > 1 ? ":" : "", $0)}')  # remove duplicate PATH entries
+source ~/{{ path_exports }}
+{# remove duplicate PATH entries #}
+export PATH=$(echo -n $PATH | awk -v RS=: '!($0 in a) {a[$0]; printf("%s%s", length(a) > 1 ? ":" : "", $0)}')
 
 {% if gui_enable %}
 {% if display_server == "xorg" %}
-# $(pacman -Qs libxft-bgra-git >/dev/null 2>&1) && \      ## parfois libxft-bgra-git doit être remplacé par libxft-bgra
-# $(pacman -Qs libxft-bgra >/dev/null 2>&1) && \
 if [[ -z $DISPLAY ]] && [[ "$(tty)" = "/dev/tty1" ]]; then
   ! pidof -s Xorg >/dev/null 2>&1 && \
     exec startx {{ exports_gui.XINITRC }}
 fi
 {% elif compositor == "wayland" %}
-if [[ -z "${DISPLAY}" ]] && [[ "${XDG_VTNR}" -eq 1 ]]; then    # XDG_VNTR only avalaible with systemd os
+{# XDG_VNTR is only avalaible on systemd #}
+if [[ -z "${DISPLAY}" ]] && [[ "${XDG_VTNR}" -eq 1 ]]; then
 {% if window_manager == "sway" %}
   exec sway --debug &> {{ path_logs }}/sway.log
 {% elif window_manager == "hyprland" %}
@@ -24,4 +24,10 @@ if [[ -z "${DISPLAY}" ]] && [[ "${XDG_VTNR}" -eq 1 ]]; then    # XDG_VNTR only a
 {% endif %}
 fi
 {% endif %}
+{% endif %}
+
+{%- if item.shell is defined and item.shell == "zsh" %}
+source ~/{{ path_zsh  }}/zshrc
+{% elif item.shell is not defined or item.shell == "bash" %}
+source ~/{{ path_bash }}/bashrc
 {% endif %}
