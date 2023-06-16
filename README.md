@@ -2,8 +2,9 @@
 
 Configure Bash, ZSH, exports, aliases
 
-Use atuin as a replacement for the history
-Use starship as the shell prompt
+Use [atuin](https://github.com/ellie/atuin) as a replacement for the history
+
+Use [starship](https://github.com/starship/starship) as the shell prompt
 
 ## Usage
 Define the variables you want in your host_vars or group_vars.
