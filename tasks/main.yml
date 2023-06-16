@@ -5,8 +5,7 @@
 
   - import_tasks: scripts.yml
 
-  # - include_tasks: exports.yml
-  #   loop: "{{ user }}"
+  - import_tasks: exports.yml
 
   # - include_tasks: aliases.yml
   #   loop: "{{ user }}"
