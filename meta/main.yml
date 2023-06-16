@@ -1,5 +1,5 @@
 galaxy_info:
-  role_name:    ssh
+  role_name:    shell
   author:       lunics
   description:  A role to configure user shell with Bash or Zsh, aliases and exports
   license:      GPL-3.0
