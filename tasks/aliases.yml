@@ -1,15 +1,22 @@
 - block:
-  - name: shell | {{ _user.name }} | template > generate aliases.sh
+  - name: aliases | template > generate {{ path_aliases }}
     template:
-      src:  "{{ item }}.j2"
-      dest: "{{ path_shell }}/{{ item }}"
+      src:  aliases.sh
+      dest:  "{{ ('/root' if item[0].owner == 'root' else ('/home/' + item[0].owner)) + path_aliases }}"
       mode: 0600
-    loop: "{{ aliases }}"
-    loop_control:
-      loop_var:  _export
+    with_subelements:
+      - "{{ shell_aliases }}"
+      - list
+      - skip_missing: true
 
-  become_user: "{{ item.name }}"
-  tags: exports
-    tags: aliases
+  - name: aliases | file > setup user/group for {{ path_aliases }}
+    file:
+      path:  "{{ ('/root' if item[0].owner == 'root' else ('/home/' + item[0].owner)) + path_aliases }}"
+      owner: "{{ item[0].owner }}"
+      group: "{{ item[1].group | default(item[1].name) }}"
+    when: item[0].owner == item[1].name
+    with_nested:
+      - "{{ shell_aliases }}"
+      - "{{ user }}"
 
-
+  tags: aliases
