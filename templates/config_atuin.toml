@@ -1,5 +1,5 @@
 # DB location
-db_path = "{{ path_share_cloud }}/atuin/history.db"
+db_path = "$SHARE/atuin/history.db"
 
 # search mode: prefix, fulltext, fuzzy
 search_mode = "fuzzy"

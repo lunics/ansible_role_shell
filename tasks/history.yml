@@ -7,7 +7,7 @@
 
   - name: history | file > create atuin config dir
     file:
-      path:  "{{ ('/root' if item.name == 'root' else ('/home/' + item.name)) + path_config }}/atuin"
+      path:  "{{ ('/root' if item.name == 'root' else ('/home/' + item.name)) + '/' + path_config }}/atuin"
       owner: "{{ item.name }}"
       group: "{{ item.group | default(item.name) }}"
       state: directory
@@ -16,7 +16,7 @@
   - name: history | template > generate atuin config file
     template:
       src:   config_atuin.toml
-      dest:  "{{ ('/root' if item.name == 'root' else ('/home/' + item.name)) + path_config }}/atuin/config.toml"
+      dest:  "{{ ('/root' if item.name == 'root' else ('/home/' + item.name)) + '/' + path_config }}/atuin/config.toml"
       owner: "{{ item.name }}"
       group: "{{ item.group | default(item.name) }}"
     loop: "{{ user }}"
@@ -42,16 +42,17 @@
   #    #old: - { path: zsh/history, state: file }
   #  # when: not _zsh_history.stat.exists
 
-  - name: history | blockinfile > add exports
-    blockinfile:
-      path:  "{{ ('/root' if item.name == 'root' else ('/home/' + item.name)) + '/' + path_exports }}"
-      marker: "# {mark} shell history"
-      block: |
-        export HISTFILE="~/{{ path_cache }}/bash_history"
-        export HISTFILESIZE=10000
-        export HISTTIMEFORMAT="%F %T "
-        export HISTCONTROL=ignoredups
-    # when: item.shell is not defined or item.shell == "bash"
-    loop: "{{ user }}"
+  ## if no atuin then
+  # - name: history | blockinfile > add exports
+  #   blockinfile:
+  #     path:  "{{ ('/root' if item.name == 'root' else ('/home/' + item.name)) + '/' + path_exports }}"
+  #     marker: "# {mark} shell history"
+  #     block: |
+  #       export HISTFILE="~/{{ path_cache }}/bash_history"
+  #       export HISTFILESIZE=10000
+  #       export HISTTIMEFORMAT="%F %T "
+  #       export HISTCONTROL=ignoredups
+  #   # when: item.shell is not defined or item.shell == "bash"
+  #   loop: "{{ user }}"
 
   tags: history, atuin

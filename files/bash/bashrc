@@ -1,10 +1,17 @@
 #!/usr/bin/env bash
 
-source ~/$SHELLRC/aliases.sh
+source $SHELLRC/aliases.sh
+# export SHELLRC="$HOME/.config/shell"
+# source "$SHELLRC/exports.sh"
+# source "$SHELLRC/aliases.sh"
+# source "$SHELLRC/icons.sh"
 
-for file in ~/$SHELLRC/functions/*; do
+for file in $SHELLRC/functions/*; do
   source $file
 done
+
+source $BASHRC/bash-preexec.sh
+eval "$(atuin init bash)"
 
 # shopt -u autocd
 # shopt -u assoc_expand_once

@@ -1,27 +1,28 @@
 - block:
-  - name: bash | blockinfile > add exports
-    blockinfile:
-      path:  "{{ ('/root' if item.name == 'root' else ('/home/' + item.name)) + '/' + path_exports }}"
-      marker: "# {mark} bash"
-      block: |
-        export BASH_ENV="{{ ('/root' if item.name == 'root' else ('/home/' + item.name)) + '/' + path_bash }}/bashrc"
-    # when: item.shell is not defined or item.shell == "bash"
-    loop: "{{ user }}"
-
   - name: bash | package > install dependencies
     package:
       name: "{{ item }}"
     loop:
       - bash
 
-  - name: bash | file > create zsh config dir
+  - name: bash | blockinfile > add exports
+    blockinfile:
+      path:  "{{ ('/root' if item.name == 'root' else ('/home/' + item.name)) + '/' + path_exports }}"
+      marker: "# {mark} bash"
+      block: |
+        export BASH_ENV="$HOME/{{ path_bash }}/bashrc"
+        export BASHRC="$SHELLRC/bash"
+    # when: item.shell is not defined or item.shell == "bash"
+    loop: "{{ user }}"
+
+  - name: bash | file > create config dir
     file:
       path:  "{{ ('/root' if item.name == 'root' else ('/home/' + item.name)) + '/' + path_bash }}"
       state: directory
     # when: item.shell is not defined or item.shell == "bash"
     loop: "{{ user }}"
 
-  - name: copy > bash files
+  - name: bash | copy > config files
     copy:
       src:   "{{ role_path }}/files/bash/"
       dest:  "{{ ('/root' if item.name == 'root' else ('/home/' + item.name)) + '/' + path_bash }}"

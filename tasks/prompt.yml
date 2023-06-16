@@ -15,8 +15,8 @@
 
   - name: prompt | template > generate starship config file
     template:
-      src:  config_starship.toml
-      dest: "{{ ('/root' if item.name == 'root' else ('/home/' + item.name)) + path_config }}/starship/config.toml"
+      src:   config_starship.toml
+      dest:  "{{ ('/root' if item.name == 'root' else ('/home/' + item.name)) + path_config }}/starship/config.toml"
       owner: "{{ item.name }}"
       group: "{{ item.group | default(item.name) }}"
     loop: "{{ user }}"
