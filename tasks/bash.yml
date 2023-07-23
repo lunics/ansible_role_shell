@@ -4,6 +4,8 @@
       name: "{{ item }}"
     loop:
       - bash
+    when: item.shell is not defined or item.shell == "bash"
+    loop: "{{ user }}"
 
   - name: bash | blockinfile > add exports
     blockinfile:
@@ -12,14 +14,14 @@
       block: |
         export BASH_ENV="$HOME/{{ path_bash }}/bashrc"
         export BASHRC="$SHELLRC/bash"
-    # when: item.shell is not defined or item.shell == "bash"
+    when: item.shell is not defined or item.shell == "bash"
     loop: "{{ user }}"
 
   - name: bash | file > create config dir
     file:
       path:  "{{ ('/root' if item.name == 'root' else ('/home/' + item.name)) + '/' + path_bash }}"
       state: directory
-    # when: item.shell is not defined or item.shell == "bash"
+    when: item.shell is not defined or item.shell == "bash"
     loop: "{{ user }}"
 
   - name: bash | copy > config files
@@ -28,6 +30,7 @@
       dest:  "{{ ('/root' if item.name == 'root' else ('/home/' + item.name)) + '/' + path_bash }}"
       owner: "{{ item.name }}"
       group: "{{ item.group | default(item.name) }}"
+    when: item.shell is not defined or item.shell == "bash"
     loop: "{{ user }}"
 
   tags: bash

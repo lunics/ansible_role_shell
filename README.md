@@ -1,13 +1,15 @@
 # Ansible role: SHELL
 
-Configure Bash, ZSH, exports, aliases
+Configure Bash, Zsh, exports, aliases.
 
-Use [atuin](https://github.com/ellie/atuin) as a replacement for the history
+Only tested on Archlinux.
 
-Use [starship](https://github.com/starship/starship) as the shell prompt
+Use [atuin](https://github.com/ellie/atuin) as a replacement for the history.
+
+Use [starship](https://github.com/starship/starship) as a shell prompt.
 
 ## Usage
-Define the variables you want in your host_vars or group_vars.
+Override [defaults](https://github.com/lunics/ansible_role_shell/tree/main/defaults/main)
 ```yaml
 shell_aliases:
   - owner: "{{ default_user }}"
@@ -58,7 +60,8 @@ shell_scripts: []
     src:
       - "{{ path_files }}/scripts/files"
     dest:  "{{ path_bin }}"
-
+```
+```yaml
 shell_functions: []
   - owner: "{{ default_user }}"
     src:
