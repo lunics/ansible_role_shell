@@ -11,6 +11,7 @@
       owner: "{{ item.name }}"
       group: "{{ item.group | default(item.name) }}"
       state: directory
+    when: item.shell_managed | default(true)
     loop: "{{ user }}"
 
   - name: history | template > generate atuin config file
@@ -19,6 +20,7 @@
       dest:  "{{ ('/root' if item.name == 'root' else ('/home/' + item.name)) + '/' + path_config }}/atuin/config.toml"
       owner: "{{ item.name }}"
       group: "{{ item.group | default(item.name) }}"
+    when: item.shell_managed | default(true)
     loop: "{{ user }}"
 
   ## create symlink between cache/atuin and path_history

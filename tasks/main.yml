@@ -24,5 +24,5 @@
   #   when: (ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu') and shell_cygwin_enabled == false
   #   copy: src=11-welcome dest=/etc/update-motd.d/11-welcome owner={{ shell_owner }} group={{ shell_group }} mode=0755
 
-  become_user: "{{ default_user }}"
+  become_user: root
   tags: shell

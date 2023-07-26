@@ -11,6 +11,7 @@
       owner: "{{ item.name }}"
       group: "{{ item.group | default(item.name) }}"
       state: directory
+    when: item.shell_managed | default(true)
     loop: "{{ user }}"
 
   - name: prompt | template > generate starship config file
@@ -19,6 +20,7 @@
       dest:  "{{ ('/root' if item.name == 'root' else ('/home/' + item.name)) + path_config }}/starship/config.toml"
       owner: "{{ item.name }}"
       group: "{{ item.group | default(item.name) }}"
+    when: item.shell_managed | default(true)
     loop: "{{ user }}"
 
   tags: prompt, starship

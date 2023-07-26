@@ -1,5 +1,12 @@
 default_user: ""        # REQUIRED
 
+user: []
+  # - name:   root
+  #   group:  root
+  # - name:   bar
+  #   group:  wheel
+  #   shell_managed: false      # skip any configuration
+
 shell_aliases: []
   # - owner: "{{ default_user }}"
   #   list:

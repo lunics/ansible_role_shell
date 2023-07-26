@@ -1,10 +1,12 @@
 - block:
   - name: bash | package > install dependencies
     package:
-      name: "{{ item }}"
+      name: bash
     loop:
       - bash
-    when: item.shell is not defined or item.shell == "bash"
+    when:
+      - item.shell is not defined or item.shell == "bash"
+      - item.shell_managed | default(true)
     loop: "{{ user }}"
 
   - name: bash | blockinfile > add exports
@@ -14,14 +16,19 @@
       block: |
         export BASH_ENV="$HOME/{{ path_bash }}/bashrc"
         export BASHRC="$SHELLRC/bash"
-    when: item.shell is not defined or item.shell == "bash"
+        export HISTFILE="$HOME/{{ path_cache }}/bash_history"
+    when:
+      - item.shell is not defined or item.shell == "bash"
+      - item.shell_managed | default(true)
     loop: "{{ user }}"
 
   - name: bash | file > create config dir
     file:
       path:  "{{ ('/root' if item.name == 'root' else ('/home/' + item.name)) + '/' + path_bash }}"
       state: directory
-    when: item.shell is not defined or item.shell == "bash"
+    when:
+      - item.shell is not defined or item.shell == "bash"
+      - item.shell_managed | default(true)
     loop: "{{ user }}"
 
   - name: bash | copy > config files
@@ -30,7 +37,9 @@
       dest:  "{{ ('/root' if item.name == 'root' else ('/home/' + item.name)) + '/' + path_bash }}"
       owner: "{{ item.name }}"
       group: "{{ item.group | default(item.name) }}"
-    when: item.shell is not defined or item.shell == "bash"
+    when:
+      - item.shell is not defined or item.shell == "bash"
+      - item.shell_managed | default(true)
     loop: "{{ user }}"
 
   tags: bash
