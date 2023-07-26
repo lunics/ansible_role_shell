@@ -5,7 +5,7 @@ user: []
   #   group:  root
   # - name:   bar
   #   group:  wheel
-  #   shell_managed: false      # skip any configuration
+  #   shell_managed: false      # optional, default=true, skip any configuration
 
 shell_aliases: []
   # - owner: "{{ default_user }}"

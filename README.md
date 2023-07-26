@@ -11,6 +11,14 @@ Use [starship](https://github.com/starship/starship) as a shell prompt.
 ## Usage
 Override [defaults](https://github.com/lunics/ansible_role_shell/tree/main/defaults/main)
 ```yaml
+user:               # shell managing based on the user list
+  - name:   root
+    group:  root
+    shell:  bash
+  - name:   bar
+    group:  wheel
+    shell:  zsh
+
 shell_aliases:
   - owner: "{{ default_user }}"
     list:
