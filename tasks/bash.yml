@@ -1,9 +1,7 @@
 - block:
-  - name: bash | package > install dependencies
+  - name: bash | package > install bash
     package:
       name: bash
-    loop:
-      - bash
     when:
       - item.shell is not defined or item.shell == "bash"
       - item.shell_managed | default(true)

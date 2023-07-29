@@ -1,5 +1,5 @@
 exports_zsh:
-  name:       ZSH
+  name:       zsh
   ZSHRC:      $SHELLRC/zsh
   ZSH:        $ZSHRC/oh-my-zsh
   ZDOTDIR:    $ZSHRC

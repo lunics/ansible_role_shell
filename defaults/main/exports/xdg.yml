@@ -1,5 +1,5 @@
 exports_xdg:
-  name:                 XDG
+  name:                 xdg
   XDG_CONFIG_HOME:      "{{ path_config }}"
   XDG_CACHE_HOME:       "{{ path_cache }}"
   XDG_DATA_HOME:        "{{ path_local }}/share"
