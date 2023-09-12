@@ -26,8 +26,4 @@ fi
 {% endif %}
 {% endif %}
 
-{%- if item.shell is defined and item.shell == "zsh" %}
-source ~/{{ path_zsh  }}/zshrc
-{% elif item.shell is not defined or item.shell == "bash" %}
-source ~/{{ path_bash }}/bashrc
-{% endif %}
+source ~/{{ path_shell }}/sources.sh

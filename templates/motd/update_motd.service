@@ -3,7 +3,6 @@ Description=update motd
 After=sshdgenkeys.service
 
 [Service]
-ExecStart=
 ExecStart=sh /usr/bin/update_motd.sh
 Restart=always
 

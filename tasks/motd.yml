@@ -13,5 +13,5 @@
       state:   started
       enabled: yes
 
-  when: motd | default(false)
+  when: motd
   tags: motd

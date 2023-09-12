@@ -1,0 +1,14 @@
+- block:
+  - name: package > intall dependencies
+    package:
+      name: "{{ item }}"
+    loop:
+      - exa
+      - bat
+      - fd
+      - fzf
+      - git     # for clone repo zplug
+      - zsh
+      # - { name: mawk, state: absent  }  # must not be installed for zplug
+
+  tags: shell_packages

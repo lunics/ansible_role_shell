@@ -11,7 +11,8 @@
 
   - import_tasks: profile.yml
 
-  # - import_tasks: zsh.yml
+  - include_tasks: zsh.yml
+    loop: "{{ user }}"
 
   - import_tasks: bash.yml
 
@@ -19,7 +20,7 @@
 
   - import_tasks: history.yml
 
-  # - import_tasks: motd.yml
+  - import_tasks: motd.yml
   # - name: banner | Configure banner welcome file
   #   when: (ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu') and shell_cygwin_enabled == false
   #   copy: src=11-welcome dest=/etc/update-motd.d/11-welcome owner={{ shell_owner }} group={{ shell_group }} mode=0755

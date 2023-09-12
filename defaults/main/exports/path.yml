@@ -1,11 +1,11 @@
 exports_path:
-  name:           path
-  CONFIG:         "~/{{ path_config }}"
-  SHELLRC:        "~/{{ path_shell  }}"
-  LOCAL:          "~/{{ path_local  }}"
-  CACHE:          "~/{{ path_cache  }}"
-  SCRIPTS:        "~/{{ path_scripts }}"
-  BIN:            "~/{{ path_bin     }}"
-  SHARE:          $LOCAL/share
-  DOWNLOADS:      ~/downloads
-  CLOUD:          ~/cloud
+  name:      path
+  CONFIG:    "~/{{ path_config }}"
+  SHELLRC:   "~/{{ path_shell  }}"
+  LOCAL:     "~/{{ path_local  }}"
+  CACHE:     "~/{{ path_cache  }}"
+  SCRIPTS:   "~/{{ path_scripts }}"
+  BIN:       "~/{{ path_bin     }}"
+  SHARE:     $LOCAL/share
+  DOWNLOADS: ~/downloads
+  CLOUD:     ~/cloud

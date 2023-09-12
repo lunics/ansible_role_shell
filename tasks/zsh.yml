@@ -1,19 +1,12 @@
 - block:
-  - name: zsh | package > install dependencies
-    package:
-      name:  "{{ item.name }}"
-      state: "{{ item.state }}"
-    loop:
-      - { name: git,  state: present }
-      - { name: zsh,  state: present }
-      - { name: mawk, state: absent  }  # must not be installed for zplug
-
-  - name: zsh | file > create zsh config dir
+  - name: ({{ item.name }}) zsh | file > create zsh config dir
     file:
       path:  "{{ path_zsh }}"
       state: directory
+      owner: "{{ item.name }}"
+      group: "{{ item.group | default(item.name) }}"
 
-  - name: zsh | template > export zsh scripts
+  - name: ({{ item.name }}) zsh | template > export zsh scripts
     template:
       src:  "{{ item }}"
       dest: "{{ path_zsh + '/' + (item | basename) }}"
@@ -21,24 +14,34 @@
     with_fileglob:
       - ../templates/zsh/*
 
-  - name: zsh | template > generate .zshrc
+  - name: ({{ item.name }}) zsh | template > generate .zshrc
     template:
-      src:  zshrc.j2
-      dest: "{{ path_zsh }}/.zshrc"
-      mode: 0600
+      src:   zshrc
+      dest:  "{{ path_zsh }}/zshrc"
+      owner: "{{ item.name }}"
+      group: "{{ item.group | default(item.name) }}"
+      mode:  "0600"
 
-  - name: zsh | stat > check if zplug repo present
+  - name: ({{ item.name }}) zsh | stat > check if zplug repo present
     stat:
       path: "{{ path_zsh }}/zplug"
     register: _zplug
 
-  - name: zsh | git > clone zplug on {{ path_zsh }}/zplug/
+  - name: ({{ item.name }}) zsh | git > clone zplug on {{ path_zsh }}/zplug/
     git:
       repo:  https://github.com/zplug/zplug
       dest:  "{{ path_zsh }}/zplug"
       depth: 1
     when: not _zplug.stat.exists
 
-  - import_tasks: oh-my-zsh.yml
+  - name: ({{ item.name }}) zsh | file > blabla
+    file:
+      path:  "{{ path_zsh }}/zplug"
+      state: directory
+      owner: "{{ item.name }}"
+      group: "{{ item.group | default(item.name) }}"
+      mode:  "0755"           # keep always double quotes
 
-  tags: zsh
+  # - import_tasks: oh-my-zsh.yml
+
+  when: item.shell == "zsh"

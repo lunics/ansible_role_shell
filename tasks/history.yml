@@ -52,9 +52,10 @@
   #     block: |
   #       export HISTFILE="~/{{ path_cache }}/bash_history"
   #       export HISTFILESIZE=10000
-  #       export HISTTIMEFORMAT="%F %T "
+  #       export HISTTIMEFORMAT="%FT%T "
   #       export HISTCONTROL=ignoredups
   #   # when: item.shell is not defined or item.shell == "bash"
   #   loop: "{{ user }}"
 
+  when: shell_history == "atuin"
   tags: history, atuin

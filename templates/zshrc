@@ -1,7 +1,7 @@
 # zshrc is empty by default
 autoload -U colors && colors	      # enable colors, must be before prompt.zsh
 
-source $SHELLRC/sources.sh
+# source $SHELLRC/sources.sh
 source $ZSHRC/history.zsh
 # source $ZSHRC/prompt.zsh
 source $ZSHRC/options.zsh

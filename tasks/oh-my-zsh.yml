@@ -1,15 +1,15 @@
 - block:
-  - name: ({{ user.1.name }}) oh-my-zsh | stat > check if oh-my-zsh repo present
+  - name: {{ user.1.name }} oh-my-zsh | stat > check if oh-my-zsh repo present
     stat:
       path: "{{ path_zsh }}/oh-my-zsh"
-    register: _ohmyzsh
+    register: r_ohmyzsh
 
   - name: ({{ user.1.name }}) oh-my-zsh | git > clone oh-my-zsh on {{ path_zsh }}
     git:
       repo:  https://github.com/robbyrussell/oh-my-zsh
       dest:  "{{ path_zsh }}/oh-my-zsh"
       depth: 1
-    when: not _ohmyzsh.stat.exists
+    when: not r_ohmyzsh.stat.exists
 
   - name: ({{ user.1.name }}) oh-my-zsh | file > remove oh-my-zsh/lib/{directories,grep-alias}
     file:

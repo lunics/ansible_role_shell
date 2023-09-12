@@ -23,4 +23,5 @@
     when: item.shell_managed | default(true)
     loop: "{{ user }}"
 
+  when: shell_prompt == "starship"
   tags: prompt, starship

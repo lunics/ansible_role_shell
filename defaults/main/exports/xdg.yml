@@ -1,17 +1,17 @@
 exports_xdg:
-  name:                 xdg
-  XDG_CONFIG_HOME:      "{{ path_config }}"
-  XDG_CACHE_HOME:       "{{ path_cache }}"
-  XDG_DATA_HOME:        "{{ path_local }}/share"
-  XDG_STATE_HOME:       "{{ path_local }}/state"
-  XDG_DATA_DIRS:        /usr/local/share:/usr/share:/var/lib/flatpak/exports/share:$XDG_DATA_HOME/flatpak/exports/share
-  XDG_CONFIG_DIRS:      /etc/xdg
-  XDG_DESKTOP_DIR:      "{{ path_home }}/desktop"
-  XDG_DOCUMENTS_DIR:    "{{ path_home }}/documents"
-  XDG_DOWNLOAD_DIR:     "{{ path_home }}/downloads"
-  XDG_MUSIC_DIR:        "{{ path_home }}/music"
-  XDG_PICTURES_DIR:     "{{ path_home }}/pictures"
-  XDG_PUBLICSHARE_DIR:  "{{ path_home }}/public"
-  XDG_TEMPLATES_DIR:    "{{ path_home }}/templates"
-  XDG_VIDEOS_DIR:       "{{ path_home }}/videos"
-  # XDG_RUNTIME_DIR     # set by pam_systemd
+  name:                xdg
+  XDG_CONFIG_HOME:     "{{ path_config }}"
+  XDG_CACHE_HOME:      "{{ path_cache }}"
+  XDG_DATA_HOME:       "{{ path_local }}/share"
+  XDG_STATE_HOME:      "{{ path_local }}/state"
+  XDG_DATA_DIRS:       /usr/local/share:/usr/share:/var/lib/flatpak/exports/share:$XDG_DATA_HOME/flatpak/exports/share
+  XDG_CONFIG_DIRS:     /etc/xdg
+  XDG_DESKTOP_DIR:     "{{ path_home }}/desktop"
+  XDG_DOCUMENTS_DIR:   "{{ path_home }}/documents"
+  XDG_DOWNLOAD_DIR:    "{{ path_home }}/downloads"
+  XDG_MUSIC_DIR:       "{{ path_home }}/music"
+  XDG_PICTURES_DIR:    "{{ path_home }}/pictures"
+  XDG_PUBLICSHARE_DIR: "{{ path_home }}/public"
+  XDG_TEMPLATES_DIR:   "{{ path_home }}/templates"
+  XDG_VIDEOS_DIR:      "{{ path_home }}/videos"
+  # XDG_RUNTIME_DIR    # set by pam_systemd

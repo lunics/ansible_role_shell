@@ -1,11 +1,4 @@
 - block:
-  - name: package > intall dependencies
-    package:
-      name: "{{ item }}"
-    with_items:
-      - exa
-      - bat
-
   - name: shell | user > check user exists
     user:
       name:  "{{ item.name }}"
@@ -20,7 +13,15 @@
       mode:  0700
     loop: "{{ user }}"
 
-  # old
+  - name: shell | template > generate sources.sh
+    template:
+      src:   sources.sh
+      dest:  "{{ ('/root' if item.name == 'root' else ('/home/' + item.name)) + '/' + path_shell + '/sources.sh' }}"
+      owner: "{{ item.name }}"
+      group: "{{ item.group | default(item.name) }}"
+    loop: "{{ user }}"
+
+  # old A DELETE
   # - name: shell | {{ i_user.name }} | template > deploy icons.sh, inputrc on {{ path_shell }}
   #   template:
   #     src:  "{{ item }}.j2"

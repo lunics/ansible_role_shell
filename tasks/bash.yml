@@ -9,7 +9,8 @@
 
   - name: bash | blockinfile > add exports
     blockinfile:
-      path:  "{{ ('/root' if item.name == 'root' else ('/home/' + item.name)) + '/' + path_exports }}"
+      path:   "{{ ('/root' if item.name == 'root' else ('/home/' + item.name)) + '/' + path_exports }}"
+      create: true
       marker: "# {mark} bash"
       block: |
         export BASH_ENV="$HOME/{{ path_bash }}/bashrc"
