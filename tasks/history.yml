@@ -58,4 +58,4 @@
   #   loop: "{{ user }}"
 
   when: shell_history == "atuin"
-  tags: history, atuin
+  tags: history, atuin, shell_history

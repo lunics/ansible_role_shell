@@ -6,15 +6,16 @@
       owner: "{{ item.name }}"
       group: "{{ item.group | default(item.name) }}"
 
-  - name: ({{ item.name }}) zsh | template > export zsh scripts
-    template:
-      src:  "{{ item }}"
-      dest: "{{ path_zsh + '/' + (item | basename) }}"
-      mode: "0600"
-    with_fileglob:
-      - ../templates/zsh/*
+  ## KO
+  # - name: ({{ item.name }}) zsh | template > export zsh scripts
+  #   template:
+  #     src:  "{{ item }}"
+  #     dest: "{{ path_zsh + '/' + (item | basename) }}"
+  #     mode: "0600"
+  #   with_fileglob:
+  #     - ../templates/zsh/*
 
-  - name: ({{ item.name }}) zsh | template > generate .zshrc
+  - name: ({{ item.name }}) zsh | template > generate zshrc
     template:
       src:   zshrc
       dest:  "{{ path_zsh }}/zshrc"
@@ -34,14 +35,24 @@
       depth: 1
     when: not _zplug.stat.exists
 
-  - name: ({{ item.name }}) zsh | file > blabla
+  - name: ({{ item.name }}) zsh | file > setup owner and group for zplug dir
     file:
-      path:  "{{ path_zsh }}/zplug"
-      state: directory
+      path:    "{{ path_zsh }}/zplug"
+      state:   directory
+      recurse: true
+      owner:   "{{ item.name }}"
+      group:   "{{ item.group | default(item.name) }}"
+      mode:    "0755"           # keep always double quotes
+
+  - name: ({{ item.name }}) zsh | copy > config files
+    copy:
+      src:   "{{ role_path }}/files/zsh/"
+      dest:  "{{ ('/root' if item.name == 'root' else ('/home/' + item.name)) + '/' + path_zsh }}"
       owner: "{{ item.name }}"
       group: "{{ item.group | default(item.name) }}"
-      mode:  "0755"           # keep always double quotes
 
+  when:
   # - import_tasks: oh-my-zsh.yml
 
   when: item.shell == "zsh"
+  tags: zsh

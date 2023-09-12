@@ -1,20 +1,20 @@
 # zshrc is empty by default
 autoload -U colors && colors	      # enable colors, must be before prompt.zsh
 
-# source $SHELLRC/sources.sh
-source $ZSHRC/history.zsh
-# source $ZSHRC/prompt.zsh
-source $ZSHRC/options.zsh
-source $SHELLRC/zsh/bindkeys.zsh
-source $SHELLRC/zsh/suffix_aliases.zsh
-# source $SHELLRC/zsh/reveal_alias.zsh
-# source $SHELLRC/zsh/oh-my-zsh.zsh
-# source $SHELLRC/zsh/plugins.zsh
+ZSH_DIR={{ path_zsh }}
+
+source $ZSH_DIR/history.zsh
+source $ZSH_DIR/prompt.zsh
+source $ZSH_DIR/options.zsh
+source $ZSH_DIR/bindkeys.zsh
+source $ZSH_DIR/suffix_aliases.zsh
+# source $ZSH_DIR/reveal_alias.zsh
+# source $ZSH_DIR/oh-my-zsh.zsh
+# source $ZSH_DIR/plugins.zsh
 
 source $LOCAL/repo/git-subrepo/.rc
 
 eval "$(thefuck --alias)"
-eval "$(starship init zsh)"
 # eval $(thefuck --yeah --alias)
 # eval $(thefuck --alias FUCK)
 
@@ -32,6 +32,8 @@ _comp_options+=(globdots)		# to include hidden files because not enable by defau
 # autoload -U +X compinit && compinit
 # autoload -U +X bashcompinit && bashcompinit
 # eval "$(stack --bash-completion-script stack)"
+
+compinit -d {{ path_zsh }}/zcompdump
 
 # BEGIN Change cursor shape for different vi modes
 function zle-keymap-select {

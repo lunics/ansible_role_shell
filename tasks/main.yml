@@ -1,4 +1,6 @@
 - block:
+  # don't use global include_tasks, need to keep thin control on every tags
+
   - import_tasks: shell.yml
 
   - import_tasks: functions.yml
@@ -13,14 +15,18 @@
 
   - include_tasks: zsh.yml
     loop: "{{ user }}"
+    tags: zsh
 
-  - import_tasks: bash.yml
+  - include_tasks: bash.yml
+    loop: "{{ user }}"
+    tags: bash
 
   - import_tasks: prompt.yml
 
   - import_tasks: history.yml
 
-  - import_tasks: motd.yml
+  ## A DEPLACER AUTRE ROLE
+  # - import_tasks: motd.yml
   # - name: banner | Configure banner welcome file
   #   when: (ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu') and shell_cygwin_enabled == false
   #   copy: src=11-welcome dest=/etc/update-motd.d/11-welcome owner={{ shell_owner }} group={{ shell_group }} mode=0755

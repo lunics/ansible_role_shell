@@ -4,7 +4,6 @@
 # add-zsh-hook preexec pre_validation
 ## END
 
-
 local cmd_alias=""
 
 # Reveal Executed Alias

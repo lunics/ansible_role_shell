@@ -1,13 +1,9 @@
 - block:
-  - name: bash | package > install bash
+  - name: ({{ item.name }}) bash | package > install bash
     package:
       name: bash
-    when:
-      - item.shell is not defined or item.shell == "bash"
-      - item.shell_managed | default(true)
-    loop: "{{ user }}"
 
-  - name: bash | blockinfile > add exports
+  - name: ({{ item.name }}) bash | blockinfile > add exports
     blockinfile:
       path:   "{{ ('/root' if item.name == 'root' else ('/home/' + item.name)) + '/' + path_exports }}"
       create: true
@@ -16,29 +12,20 @@
         export BASH_ENV="$HOME/{{ path_bash }}/bashrc"
         export BASHRC="$SHELLRC/bash"
         export HISTFILE="$HOME/{{ path_cache }}/bash_history"
-    when:
-      - item.shell is not defined or item.shell == "bash"
-      - item.shell_managed | default(true)
-    loop: "{{ user }}"
 
-  - name: bash | file > create config dir
+  - name: ({{ item.name }}) bash | file > create config dir
     file:
       path:  "{{ ('/root' if item.name == 'root' else ('/home/' + item.name)) + '/' + path_bash }}"
       state: directory
-    when:
-      - item.shell is not defined or item.shell == "bash"
-      - item.shell_managed | default(true)
-    loop: "{{ user }}"
 
-  - name: bash | copy > config files
+  - name: ({{ item.name }}) bash | copy > config files
     copy:
       src:   "{{ role_path }}/files/bash/"
       dest:  "{{ ('/root' if item.name == 'root' else ('/home/' + item.name)) + '/' + path_bash }}"
       owner: "{{ item.name }}"
       group: "{{ item.group | default(item.name) }}"
-    when:
-      - item.shell is not defined or item.shell == "bash"
-      - item.shell_managed | default(true)
-    loop: "{{ user }}"
 
+  when:
+    - item.shell is not defined or item.shell == "bash"
+    - item.shell_managed | default(true)
   tags: bash

@@ -9,6 +9,7 @@
     file:
       path:  "{{ ('/root' if item.name == 'root' else ('/home/' + item.name)) + '/' + path_shell }}"
       owner: "{{ item.name }}"
+      group: "{{ item.group | default(item.name) }}"
       state: directory
       mode:  0700
     loop: "{{ user }}"

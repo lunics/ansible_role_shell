@@ -6,7 +6,7 @@ Only tested on Archlinux.
 
 Use [atuin](https://github.com/ellie/atuin) as a replacement for the history.
 
-Use [starship](https://github.com/starship/starship) as a shell prompt.
+Use [starship](https://github.com/starship/starship) as a replacement for the shell prompt.
 
 ## Usage
 Override [defaults](https://github.com/lunics/ansible_role_shell/tree/main/defaults/main)
