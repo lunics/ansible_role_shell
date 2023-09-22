@@ -18,11 +18,17 @@ bindkey -v '^?' backward-delete-char    ## a tester
 ## a remplacer par fzf
 # enable vim navigation dans la liste des arguments possible de l'autocompletion
 # dépend de zmodload zsh/complist
-# old bindkey -M menuselect 'h' vi-backward-char
-bindkey -M menuselect '^h' vi-backward-char
-bindkey -M menuselect '^k' vi-up-line-or-history
-bindkey -M menuselect '^l' vi-forward-char
-bindkey -M menuselect '^j' vi-down-line-or-history
+bindkey -M menuselect "^h" backward-char
+bindkey -M menuselect "^k" up-line-or-history
+bindkey -M menuselect "^l" forward-char
+bindkey -M menuselect "^j" down-line-or-history
+#                     "^I" complete-word
+#                     "^J" accept-line
+#                     "^M" accept-line
+#                     "^[[A" up-line-or-history
+#                     "^[[B" down-line-or-history
+#                     "^[[C" forward-char
+#                     "^[[D" backward-char
 
 # autoload edit-command-line; zle -N edit-command-line
 # bindkey '^e' edit-command-line          # ctrl e = edit current command line in vim

@@ -16,7 +16,7 @@ command_timeout   = 1000
 
 format = '''
 [╭](bold green)$directory$sudo$git_branch$git_commit$git_state$git_metrics$package$shlvl$jobs$fill$status$cmd_duration
-[╰](bold green)$username@$hostname   '''
+[╰](bold green)$username@$hostname  '''
 
 [fill]
 symbol = ' '

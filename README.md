@@ -1,5 +1,7 @@
 # Ansible role: SHELL
 
+*Work in progress.*
+
 Configure Bash, Zsh, exports, aliases.
 
 Only tested on Archlinux.
@@ -78,3 +80,6 @@ shell_functions: []
     src:
       - "{{ path_files }}/scripts/functions"
 ```
+### TODO
+- templates/zshrc : source $LOCAL/repo/git-subrepo/.rc
+- remove motd

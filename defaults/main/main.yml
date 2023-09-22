@@ -1,4 +1,4 @@
-default_user:   ""    # REQUIRED
+default_user:  ""      # REQUIRED
 shell_prompt:  false   # starship, false = no custom app
 shell_history: false   # atuin, false = no custom app
 motd:          false

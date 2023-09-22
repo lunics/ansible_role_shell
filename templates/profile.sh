@@ -16,9 +16,9 @@ fi
 {# XDG_VNTR is only avalaible on systemd #}
 if [[ -z "${DISPLAY}" ]] && [[ "${XDG_VTNR}" -eq 1 ]]; then
 {% if window_manager == "sway" %}
-  exec sway --debug &> {{ path_logs }}/sway.log
+  exec sway --debug &> ~/{{ path_logs }}/sway.log
 {% elif window_manager == "hyprland" %}
-  exec Hyprland &> {{ path_logs }}/hyprland.log
+  exec Hyprland --config ~/{{ path_config}}/hypr/hyprland.conf &> ~/{{ path_logs }}/hyprland.log
 {% else %}
   exec $WM
 {% endif %}

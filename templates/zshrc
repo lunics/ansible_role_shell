@@ -1,22 +1,14 @@
 # zshrc is empty by default
 autoload -U colors && colors	      # enable colors, must be before prompt.zsh
 
-ZSH_DIR={{ path_zsh }}
+## TODO
+# source $LOCAL/repo/git-subrepo/.rc      ## ??
 
-source $ZSH_DIR/history.zsh
-source $ZSH_DIR/prompt.zsh
-source $ZSH_DIR/options.zsh
-source $ZSH_DIR/bindkeys.zsh
-source $ZSH_DIR/suffix_aliases.zsh
-# source $ZSH_DIR/reveal_alias.zsh
-# source $ZSH_DIR/oh-my-zsh.zsh
-# source $ZSH_DIR/plugins.zsh
-
-source $LOCAL/repo/git-subrepo/.rc
-
-eval "$(thefuck --alias)"
-# eval $(thefuck --yeah --alias)
-# eval $(thefuck --alias FUCK)
+if [ -x "$(command -v "thefuck")" ]; then
+  eval "$(thefuck --alias)"
+  # eval $(thefuck --yeah --alias)
+  # eval $(thefuck --alias FUCK)
+fi
 
 # auto/tab complete
 autoload -Uz compinit
@@ -25,15 +17,13 @@ zstyle ':completion:*' completer _expand_alias _complete _ignored _files
 zstyle ':completion:*' regular true
 zstyle ':completion:*' menu select
 zmodload zsh/complist
-compinit
+compinit -d {{ path_zsh }}/zcompdump
 _comp_options+=(globdots)		# to include hidden files because not enable by default
 # # Shell Auto-completion
 # ## pacman -Sy bash-completion
 # autoload -U +X compinit && compinit
 # autoload -U +X bashcompinit && bashcompinit
 # eval "$(stack --bash-completion-script stack)"
-
-compinit -d {{ path_zsh }}/zcompdump
 
 # BEGIN Change cursor shape for different vi modes
 function zle-keymap-select {
@@ -58,6 +48,16 @@ zle -N zle-line-init
 echo -ne '\e[5 q'                           # Use beam shape cursor on startup.
 preexec() { echo -ne '\e[5 q' ;}            # Use beam shape cursor for each new prompt.
 # END
+
+ZSH_DIR={{ path_zsh }}
+source $ZSH_DIR/history.zsh
+source $ZSH_DIR/prompt.zsh
+source $ZSH_DIR/options.zsh
+source $ZSH_DIR/bindkeys.zsh
+source $ZSH_DIR/suffix_aliases.zsh
+# source $ZSH_DIR/reveal_alias.zsh
+# source $ZSH_DIR/oh-my-zsh.zsh
+# source $ZSH_DIR/plugins.zsh
 
 # enable colors when typing in the command line, must be at the end of zshrc
 source /usr/share/zsh/plugins/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh 2> /dev/null
