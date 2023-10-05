@@ -1,4 +1,14 @@
 - block:
+  - name: ({{ item.name }}) zsh | package > install dependencies
+    package:
+      name: "{{ _pkg_zsh }}"
+    loop:
+      - zsh
+      - git
+    loop_control:
+      loop_var: _pkg_zsh
+    run_once: true
+
   - name: ({{ item.name }}) zsh | file > create zsh config dir
     file:
       path:  "{{ path_zsh }}"
@@ -28,21 +38,21 @@
       path: "{{ path_zsh }}/zplug"
     register: _zplug
 
-  - name: ({{ item.name }}) zsh | git > clone zplug on {{ path_zsh }}/zplug/
+  - name: ({{ item.name }}) zsh | git > clone zplug on ~/{{ path_zsh }}/zplug/
     git:
       repo:  https://github.com/zplug/zplug
-      dest:  "{{ path_zsh }}/zplug"
+      dest:  "{{ ('/root' if item.name == 'root' else ('/home/' + item.name)) + '/' + path_zsh }}/zplug"
       depth: 1
     when: not _zplug.stat.exists
 
   - name: ({{ item.name }}) zsh | file > setup owner and group for zplug dir
     file:
-      path:    "{{ path_zsh }}/zplug"
+      path:    "{{ ('/root' if item.name == 'root' else ('/home/' + item.name)) + '/' + path_zsh }}/zplug"
       state:   directory
       recurse: true
       owner:   "{{ item.name }}"
       group:   "{{ item.group | default(item.name) }}"
-      mode:    "0755"           # keep always double quotes
+      mode:    "0755"
 
   - name: ({{ item.name }}) zsh | copy > config files
     copy:

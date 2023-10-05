@@ -49,7 +49,7 @@ echo -ne '\e[5 q'                           # Use beam shape cursor on startup.
 preexec() { echo -ne '\e[5 q' ;}            # Use beam shape cursor for each new prompt.
 # END
 
-ZSH_DIR={{ path_zsh }}
+ZSH_DIR=$HOME/{{ path_zsh }}
 source $ZSH_DIR/history.zsh
 source $ZSH_DIR/prompt.zsh
 source $ZSH_DIR/options.zsh

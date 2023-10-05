@@ -2,7 +2,7 @@
 
 *Work in progress.*
 
-Configure Bash, Zsh, exports, aliases.
+Configure bash, zsh, exports, aliases.
 
 Only tested on Archlinux.
 
