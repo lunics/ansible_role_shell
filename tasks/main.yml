@@ -3,6 +3,8 @@
 
   - import_tasks: shell.yml
 
+  - import_tasks: user_dirs.yml
+
   - import_tasks: functions.yml
 
   - import_tasks: scripts.yml

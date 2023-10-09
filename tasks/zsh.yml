@@ -7,7 +7,7 @@
       - git
     loop_control:
       loop_var: _pkg_zsh
-    run_once: true
+    run_once: true          ## A TESTER
 
   - name: ({{ item.name }}) zsh | file > create zsh config dir
     file:

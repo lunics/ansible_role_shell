@@ -6,7 +6,6 @@
       - bash
     loop_control:
       loop_var: _pkg_bash
-    # run_once: true
 
   - name: ({{ item.name }}) bash | blockinfile > add exports
     blockinfile:

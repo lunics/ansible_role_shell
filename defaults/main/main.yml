@@ -51,6 +51,16 @@ shell_functions: []
   #   src:
   #     - "{{ path_files }}/scripts/functions"
 
+user_dirs: []
+  # - owner: foo
+  #   list:
+  #     - downloads
+  #     - .config
+  #     - .config/systemd/user
+  #     - .cache
+  #     - .cache/logs
+  #     - .cache/ansible
+
 gui_enable:     false
 display_server: ""
 compositor:     ""
