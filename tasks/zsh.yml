@@ -41,13 +41,15 @@
   - name: ({{ item.name }}) zsh | git > clone zplug on ~/{{ path_zsh }}/zplug/
     git:
       repo:  https://github.com/zplug/zplug
-      dest:  "{{ ('/root' if item.name == 'root' else ('/home/' + item.name)) + '/' + path_zsh }}/zplug"
+      # dest:  "{{ ('/root' if item.name == 'root' else ('/home/' + item.name)) + '/' + path_zsh }}/zplug"
+      dest:  "{{ path_zsh }}/zplug"
       depth: 1
     when: not _zplug.stat.exists
 
   - name: ({{ item.name }}) zsh | file > setup owner and group for zplug dir
     file:
-      path:    "{{ ('/root' if item.name == 'root' else ('/home/' + item.name)) + '/' + path_zsh }}/zplug"
+      # path:    "{{ ('/root' if item.name == 'root' else ('/home/' + item.name)) + '/' + path_zsh }}/zplug"
+      path:    "{{ path_zsh }}/zplug"
       state:   directory
       recurse: true
       owner:   "{{ item.name }}"
@@ -58,6 +60,7 @@
     copy:
       src:   "{{ role_path }}/files/zsh/"
       dest:  "{{ ('/root' if item.name == 'root' else ('/home/' + item.name)) + '/' + path_zsh }}"
+      dest:  "{{ path_zsh }}"
       owner: "{{ item.name }}"
       group: "{{ item.group | default(item.name) }}"
 

@@ -1,0 +1,4 @@
+emulate sh -c 'source /etc/profile'
+
+[ -f {{ path_zsh }}/profile ] && \
+  source {{ path_zsh }}/profile

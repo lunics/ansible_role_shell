@@ -2,7 +2,7 @@
 
 {# if a $PATH/bin is broken, xorg can fail to boot  #}
 {# needed it to load xprofile startup programs + i3 volume and light shortcut #}
-source ~/{{ path_exports }}
+source {{ path_exports }}
 {# remove duplicate PATH entries #}
 export PATH=$(echo -n $PATH | awk -v RS=: '!($0 in a) {a[$0]; printf("%s%s", length(a) > 1 ? ":" : "", $0)}')
 
@@ -26,4 +26,4 @@ fi
 {% endif %}
 {% endif %}
 
-source ~/{{ path_shell }}/sources.sh
+source {{ path_shell }}/sources.sh

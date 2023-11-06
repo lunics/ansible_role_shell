@@ -32,4 +32,4 @@
       - "{{ shell_exports }}"
       - "{{ user }}"
 
-  tags: exports
+  tags: exports, shell_exports

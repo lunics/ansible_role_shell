@@ -48,7 +48,7 @@ echo -ne '\e[5 q'                           # Use beam shape cursor on startup.
 preexec() { echo -ne '\e[5 q' ;}            # Use beam shape cursor for each new prompt.
 # END
 
-ZSH_DIR=$HOME/{{ path_zsh }}
+ZSH_DIR={{ path_zsh }}
 # for file in "$ZSH_DIR/functions/*"; do     ## A DELETE if below ok
 for file in $ZSH_DIR/functions/*; do
   source $file
