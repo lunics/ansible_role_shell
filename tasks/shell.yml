@@ -7,17 +7,19 @@
 
   - name: shell | file > create user shell dir
     file:
-      path:  "{{ ('/root' if item.name == 'root' else ('/home/' + item.name)) + '/' + path_shell }}"
+      # path:  "{{ ('/root' if item.name == 'root' else ('/home/' + item.name)) + '/' + path_shell }}"
+      path:  "{{ path_shell }}"
       owner: "{{ item.name }}"
       group: "{{ item.group | default(item.name) }}"
       state: directory
-      mode:  0700
+      mode:  "0700"
     loop: "{{ user }}"
 
   - name: shell | template > generate sources.sh
     template:
       src:   sources.sh
-      dest:  "{{ ('/root' if item.name == 'root' else ('/home/' + item.name)) + '/' + path_shell + '/sources.sh' }}"
+      # dest:  "{{ ('/root' if item.name == 'root' else ('/home/' + item.name)) + '/' + path_shell + '/sources.sh' }}"
+      dest:  "{{ path_shell }}/sources.sh"
       owner: "{{ item.name }}"
       group: "{{ item.group | default(item.name) }}"
     loop: "{{ user }}"

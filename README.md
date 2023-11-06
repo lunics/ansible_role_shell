@@ -81,5 +81,6 @@ shell_functions: []
       - "{{ path_files }}/scripts/functions"
 ```
 ### TODO
+- essayer de supprimer profile.yml en le détournant
 - templates/zshrc : source $LOCAL/repo/git-subrepo/.rc
 - remove motd

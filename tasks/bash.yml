@@ -6,29 +6,34 @@
       - bash
     loop_control:
       loop_var: _pkg_bash
+    become_user: root
 
   - name: ({{ item.name }}) bash | blockinfile > add exports
     blockinfile:
-      path:   "{{ ('/root' if item.name == 'root' else ('/home/' + item.name)) + '/' + path_exports }}"
+      # path:   "{{ ('/root' if item.name == 'root' else ('/home/' + item.name)) + '/' + path_exports }}"
+      path:   "{{ path_exports }}"
       create: true
       marker: "# {mark} bash"
       block: |
-        export BASH_ENV="$HOME/{{ path_bash }}/bashrc"
+        export BASH_ENV="{{ path_bash }}/bashrc"
         export BASHRC="$SHELLRC/bash"
-        export HISTFILE="$HOME/{{ path_cache }}/bash_history"
+        export HISTFILE="{{ path_cache }}/bash_history"
 
   - name: ({{ item.name }}) bash | file > create config dir
     file:
-      path:  "{{ ('/root' if item.name == 'root' else ('/home/' + item.name)) + '/' + path_bash }}"
+      # path:  "{{ ('/root' if item.name == 'root' else ('/home/' + item.name)) + '/' + path_bash }}"
+      path:  "{{ path_bash }}"
       state: directory
 
   - name: ({{ item.name }}) bash | copy > config files
     copy:
       src:   "{{ role_path }}/files/bash/"
-      dest:  "{{ ('/root' if item.name == 'root' else ('/home/' + item.name)) + '/' + path_bash }}"
+      # dest:  "{{ ('/root' if item.name == 'root' else ('/home/' + item.name)) + '/' + path_bash }}"
+      dest:  "{{ path_bash }}"
       owner: "{{ item.name }}"
       group: "{{ item.group | default(item.name) }}"
 
+  become_user: "{{ item.name }}"
   when:
     - item.shell is not defined or item.shell == "bash"
     - item.shell_managed | default(true)

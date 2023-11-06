@@ -64,5 +64,6 @@
   when:
   # - import_tasks: oh-my-zsh.yml
 
+  become_user: "{{ item.name }}"
   when: item.shell == "zsh"
   tags: zsh

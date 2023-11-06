@@ -13,7 +13,7 @@
 
   - import_tasks: aliases.yml
 
-  - import_tasks: profile.yml
+  - import_tasks: profile.yml   ## normalement plus utile
 
   - include_tasks: zsh.yml
     loop: "{{ user }}"
@@ -33,5 +33,5 @@
   #   when: (ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu') and shell_cygwin_enabled == false
   #   copy: src=11-welcome dest=/etc/update-motd.d/11-welcome owner={{ shell_owner }} group={{ shell_group }} mode=0755
 
-  become_user: root
+  become_user: "{{ default_user }}"
   tags: shell

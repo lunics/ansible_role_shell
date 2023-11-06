@@ -4,10 +4,12 @@
       name: "{{ item }}"
     loop:
       - atuin
+    become_user: root
 
   - name: history | file > create atuin config dir
     file:
-      path:  "{{ ('/root' if item.name == 'root' else ('/home/' + item.name)) + '/' + path_config }}/atuin"
+      # path:  "{{ ('/root' if item.name == 'root' else ('/home/' + item.name)) + '/' + path_config }}/atuin"
+      path:  "{{ path_config }}/atuin"
       owner: "{{ item.name }}"
       group: "{{ item.group | default(item.name) }}"
       state: directory
@@ -17,7 +19,8 @@
   - name: history | template > generate atuin config file
     template:
       src:   config_atuin.toml
-      dest:  "{{ ('/root' if item.name == 'root' else ('/home/' + item.name)) + '/' + path_config }}/atuin/config.toml"
+      # dest:  "{{ ('/root' if item.name == 'root' else ('/home/' + item.name)) + '/' + path_config }}/atuin/config.toml"
+      dest:  "{{ path_config }}/atuin/config.toml"
       owner: "{{ item.name }}"
       group: "{{ item.group | default(item.name) }}"
     when: item.shell_managed | default(true)

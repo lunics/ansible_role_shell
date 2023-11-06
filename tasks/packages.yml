@@ -10,5 +10,6 @@
       - git     # for clone repo zplug
       - zsh
       # - { name: mawk, state: absent  }  # must not be installed for zplug
+    become_user: root
 
   tags: shell_packages
