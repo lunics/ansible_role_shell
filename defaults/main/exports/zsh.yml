@@ -1,8 +1,8 @@
 exports_zsh:
   name:       zsh
-  ZSHRC:      $SHELLRC/zsh
-  ZSH:        $ZSHRC/oh-my-zsh
-  ZDOTDIR:    $ZSHRC
+  ZDOTDIR:    $ZSHRC              # official
+  ZSHRC:      $SHELLRC/zsh        # personnal
+  ZSH:        $ZSHRC/oh-my-zsh    # personnal
   # ZSH_THEME="robbyrussell"
   # CASE_SENSITIVE="true"
   # HYPHEN_INSENSITIVE="true"         # Case-sensitive completion must be off. _ and - will be interchangeable
@@ -10,5 +10,5 @@ exports_zsh:
   # ENABLE_CORRECTION="true"          # command auto-correction
   WORDCHARS:  "*?_[]~=&;!#$%^(){}<>"  # to define words separation for the cursor
   KEYTIMEOUT: 0.1                     # time to activate vim mode and others mode   ## tester sans
-  ZPLUG_HOME: $ZSHRC/zplug            # zplug home dir
+  ZPLUG_HOME: $ZSHRC/zplug            # zplug home dir, official for zplug
   ZSH_FZF_HISTORY_SEARCH_BIND: "^r"   # set keybinding for zsh-fzf-history-search plugin

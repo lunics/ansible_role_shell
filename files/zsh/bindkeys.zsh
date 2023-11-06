@@ -40,14 +40,16 @@ bindkey -M menuselect "^j" down-line-or-history
 
 stty stop undef		                      # disable ctrl-s to avoid freeze terminal
 
-fzf-change-dirstack () {
-  local dir
-  print -rNC1 -- $dirstack |
-    fzf --read0 --print0 |
-    IFS= read -rd '' dir &&
-    cd -- $dir &&
-    zle -I
-}
-zle -N fzf-change-dirstack
-bindkey '^[d' fzf-change-dirstack         # ALT+P = fzf + dirs -v
-bindkey '^[f' fd                          # alt f = fd
+zle -N _fzf_change_dirstack
+bindkey '^[p' _fzf_change_dirstack        # ALT+P = fzf + dirs -v
+
+zle -N _open_ranger
+bindkey '^I' _open_ranger     # IF tab pressed when prompt is empty THEN run ranger
+
+zle -N _open_all
+bindkey '^F' _open_all        # ctrl f
+
+# zle -N _open_dir
+# bindkey '^G' _open_dir        # ctrl g
+
+eval "$(navi widget zsh)"       # ctrl g = open navi
