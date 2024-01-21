@@ -23,5 +23,5 @@ if [[ -r /usr/share/bash-completion/bash_completion ]]; then
   . /usr/share/bash-completion/bash_completion
 fi
 
-[ -f {{ path_bash }}/profile ] && \
-  source {{ path_bash }}/profile
+[ -f {{ path_shell }}/profile.sh ] && \
+  source {{ path_shell }}/profile.sh

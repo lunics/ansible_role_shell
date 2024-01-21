@@ -1,0 +1,6 @@
+# file loaded by the terminal and ssh before zprofile
+
+zsh-newuser-install() { :; }      # disable zsh ask for asking to create a new config even if the profile is already loaded from /etc/zsh/zprofile
+
+[ ! -z $DISPLAY ] && [ -f {{ path_shell }}/profile.sh ] && \
+  source {{ path_shell }}/profile.sh

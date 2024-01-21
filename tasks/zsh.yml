@@ -8,6 +8,7 @@
     loop_control:
       loop_var: _pkg_zsh
     run_once: true          ## A TESTER
+    become_user: root
 
   - name: ({{ item.name }}) zsh | file > create zsh config dir
     file:

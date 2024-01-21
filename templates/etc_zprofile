@@ -1,4 +1,6 @@
+# file loaded by ssh only, not the terminal, and after zshenv
+
 emulate sh -c 'source /etc/profile'
 
-[ -f {{ path_zsh }}/profile ] && \
-  source {{ path_zsh }}/profile
+[ -f {{ path_shell }}/profile.sh ] && \
+  source {{ path_shell }}/profile.sh

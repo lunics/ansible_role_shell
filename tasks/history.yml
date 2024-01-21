@@ -18,7 +18,7 @@
 
   - name: history | template > generate atuin config file
     template:
-      src:   config_atuin.toml
+      src:   atuin.toml
       # dest:  "{{ ('/root' if item.name == 'root' else ('/home/' + item.name)) + '/' + path_config }}/atuin/config.toml"
       dest:  "{{ path_config }}/atuin/config.toml"
       owner: "{{ item.name }}"

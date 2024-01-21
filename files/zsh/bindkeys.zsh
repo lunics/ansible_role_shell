@@ -52,4 +52,6 @@ bindkey '^F' _open_all        # ctrl f
 # zle -N _open_dir
 # bindkey '^G' _open_dir        # ctrl g
 
-eval "$(navi widget zsh)"       # ctrl g = open navi
+if command -v navi &> /dev/null; then
+  eval "$(navi widget zsh)"       # ctrl g = open navi
+fi

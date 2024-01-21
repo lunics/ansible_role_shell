@@ -1,8 +1,7 @@
-# DB location
-db_path = "$SHARE/atuin/history.db"
-
-# search mode: prefix, fulltext, fuzzy
-search_mode = "fuzzy"
+db_path = "$SHARE/atuin/history.db"   # DB location
+search_mode = "fuzzy"                 # search mode: prefix, fulltext, fuzzy
+enter_accept = true                   # immediately executing a commandn, press tab to return to the shell
+style = auto
 
 # encryption key directory
 # key_path = "~/.key"

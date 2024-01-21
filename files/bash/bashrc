@@ -10,8 +10,10 @@ for file in $SHELLRC/functions/*; do
   source $file
 done
 
-source $BASHRC/bash-preexec.sh
-eval "$(atuin init bash)"
+if command -v atuin &> /dev/null; then
+  source $BASHRC/bash-preexec.sh
+  eval "$(atuin init bash)"
+fi
 
 # shopt -u autocd
 # shopt -u assoc_expand_once

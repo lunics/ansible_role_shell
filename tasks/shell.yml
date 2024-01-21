@@ -1,8 +1,7 @@
 - block:
   - name: shell | user > check user exists
     user:
-      name:  "{{ item.name }}"
-      state: present
+      name: "{{ item.name }}"
     loop: "{{ user }}"
 
   - name: shell | file > create user shell dir
