@@ -1,24 +1,8 @@
 - block:
-  - name: aliases | template > generate {{ path_aliases }}
+  - name: aliases | template > Generate {{ path_aliases }}
     template:
       src:  aliases.sh
-      # dest: "{{ ('/root' if item.0.owner == 'root' else ('/home/' + item.0.owner)) + '/' + path_aliases }}"
       dest: "{{ path_aliases }}"
-    with_subelements:
-      - "{{ shell_aliases }}"
-      - list
-      - skip_missing: true
-
-  - name: aliases | file > setup user/group for {{ path_aliases }}
-    file:
-      # path:  "{{ ('/root' if item.0.owner == 'root' else ('/home/' + item.0.owner)) + '/' + path_aliases }}"
-      path:  "{{ path_aliases }}"
-      owner: "{{ item.0.owner }}"
-      group: "{{ item.1.group | default(item.1.name) }}"
-      mode:  "0600"
-    when: item.0.owner == item.1.name
-    with_nested:
-      - "{{ shell_aliases }}"
-      - "{{ user }}"
+      mode: "0600"
 
   tags: aliases, shell_aliases

@@ -11,7 +11,7 @@
 
   - import_tasks: exports.yml
 
-  # - import_tasks: aliases.yml
+  - import_tasks: aliases.yml
 
   # - import_tasks: profile.yml   ## normalement plus utile
 
