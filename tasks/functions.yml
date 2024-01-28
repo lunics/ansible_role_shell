@@ -4,7 +4,6 @@
       path:  "{{ path_shell }}/functions"
       state: directory
       mode:  "0700"
-    loop: "{{ shell_functions }}"
 
   - name: scripts | copy > deploy functions on {{ path_shell }}/functions
     copy:
