@@ -4,7 +4,7 @@
       name: "{{ _pkg_zsh }}"
     loop:
       - zsh
-      - git
+      - git     # for clone repo zplug
     loop_control:
       loop_var: _pkg_zsh
     run_once: true          ## A TESTER
