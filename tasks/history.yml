@@ -1,30 +1,18 @@
 - block:
-  - name: history | package > install dependencies
+  - name: history | package > Install atuin
     package:
-      name: "{{ item }}"
-    loop:
-      - atuin
+      name: atuin
     become_user: root
 
-  - name: history | file > create atuin config dir
+  - name: history | file > Create atuin config dir
     file:
-      # path:  "{{ ('/root' if item.name == 'root' else ('/home/' + item.name)) + '/' + path_config }}/atuin"
       path:  "{{ path_config }}/atuin"
-      owner: "{{ item.name }}"
-      group: "{{ item.group | default(item.name) }}"
       state: directory
-    when: item.shell_managed | default(true)
-    loop: "{{ user }}"
 
-  - name: history | template > generate atuin config file
+  - name: history | template > Generate atuin config file
     template:
-      src:   atuin.toml
-      # dest:  "{{ ('/root' if item.name == 'root' else ('/home/' + item.name)) + '/' + path_config }}/atuin/config.toml"
-      dest:  "{{ path_config }}/atuin/config.toml"
-      owner: "{{ item.name }}"
-      group: "{{ item.group | default(item.name) }}"
-    when: item.shell_managed | default(true)
-    loop: "{{ user }}"
+      src:  atuin.toml
+      dest: "{{ path_config }}/atuin/config.toml"
 
   ## create symlink between cache/atuin and path_history
   # with_items:
