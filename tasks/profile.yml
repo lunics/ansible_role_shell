@@ -1,11 +1,11 @@
 - block:
-  - name: profile | file > create /etc/zsh dir
+  - name: profile | file > Create /etc/zsh dir
     file:
       path:  /etc/zsh
       state: directory
     become_user: root
 
-  - name: profile | template > generate global bashrc and zprofile
+  - name: profile | template > Generate global bashrc and zprofile
     template:
       src:  "{{ item.src  }}"
       dest: "{{ item.dest }}"
@@ -15,19 +15,9 @@
       - { src: etc_zshenv,   dest: /etc/zsh/zshenv   }
     become_user: root
 
-  - name: profile | template > generate shell profile
+  - name: profile | template > Generate shell profile
     template:
-      src:    profile.sh
-      # dest:  "{{ ('/root' if item.name == 'root' else ('/home/' + item.name)) +
-      #            '/.' + ('z' if item.shell == 'zsh' else '') + 'profile' }}"
-      # dest:  "$HOME/.{{ 'z' if item.shell == 'zsh' else '' }}profile"
-      #          ('/.zshenv' if (item.shell is defined and item.shell == 'zsh')
-      #          else '/.profile') }}"
-      # dest:  "{{ (path_zsh + '/profile') if item.shell == 'zsh' else (path_bash + '/profile') }}"
-      dest:  "{{ path_shell }}/profile.sh"
-      owner: "{{ item.name }}"
-      group: "{{ item.group | default(item.name) }}"
-    when: item.shell_managed | default(true)
-    loop: "{{ user }}"
+      src:  profile.sh
+      dest: "{{ path_shell }}/profile.sh"
 
   tags: shell_profile, profile

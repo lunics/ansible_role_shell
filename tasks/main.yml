@@ -13,7 +13,7 @@
 
   - import_tasks: aliases.yml
 
-  # - import_tasks: profile.yml   ## normalement plus utile
+  - import_tasks: profile.yml
 
   # - include_tasks: zsh.yml
   #   loop: "{{ user }}"
