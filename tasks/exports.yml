@@ -1,12 +1,11 @@
 - block:
-  - name: exports | blockinfile > generate {{ path_exports }}
+  - name: exports | blockinfile > Generate {{ path_exports }}
     blockinfile:
-      # path:  "{{ ('/root' if item.0.owner == 'root' else ('/home/' + item.0.owner)) + '/' + path_exports }}"
-      path:  "{{ path_exports }}"
+      path:   "{{ path_exports }}"
       create: true
-      marker: "# {mark} {{ item.1.name }}"
+      marker: "# {mark} {{ item.name }}"
       block: |
-        {% for export in item.1 | dict2items(key_name="key", value_name="value") %}
+        {% for export in item | dict2items(key_name="key", value_name="value") %}
           {%- if export.key != "name" %}
             {%- if export.value | regex_search("\$\(") +%}  {# when item.value start by $(command) then don't add quotes #}
         export {{ export.key }}={{ export.value }}
@@ -16,20 +15,6 @@
           {%- endif %}
         {% endfor %}
     #"
-    with_subelements:
-      - "{{ shell_exports }}"
-      - list
-      - skip_missing: true
-
-  - name: exports | file > setup user/group for {{ path_exports }}
-    file:
-      # path:  "{{ ('/root' if item.0.owner == 'root' else ('/home/' + item.0.owner)) + '/' + path_exports }}"
-      path:  "{{ path_exports }}"
-      owner: "{{ item.0.owner }}"
-      group: "{{ item.1.group | default(item.1.name) }}"
-    when: item.0.owner == item.1.name
-    with_nested:
-      - "{{ shell_exports }}"
-      - "{{ user }}"
+    loop: "{{ shell_exports }}"
 
   tags: exports, shell_exports
