@@ -15,13 +15,9 @@
 
   - import_tasks: profile.yml
 
-  # - include_tasks: zsh.yml
-  #   loop: "{{ user }}"
-  #   tags: zsh
+  - import_tasks: zsh.yml
 
   # - include_tasks: bash.yml
-  #   loop: "{{ user }}"
-  #   tags: bash
 
   # - import_tasks: prompt.yml
 

@@ -1,21 +1,16 @@
 - block:
-  - name: ({{ item.name }}) zsh | package > install dependencies
+  - name: zsh | package > Install dependencies
     package:
-      name: "{{ _pkg_zsh }}"
+      name: "{{ item }}"
     loop:
       - zsh
       - git     # for clone repo zplug
-    loop_control:
-      loop_var: _pkg_zsh
-    run_once: true          ## A TESTER
     become_user: root
 
-  - name: ({{ item.name }}) zsh | file > create zsh config dir
+  - name: zsh | file > Create zsh config dir
     file:
       path:  "{{ path_zsh }}"
       state: directory
-      owner: "{{ item.name }}"
-      group: "{{ item.group | default(item.name) }}"
 
   ## KO
   # - name: ({{ item.name }}) zsh | template > export zsh scripts
@@ -26,48 +21,28 @@
   #   with_fileglob:
   #     - ../templates/zsh/*
 
-  - name: ({{ item.name }}) zsh | template > generate zshrc
+  - name: zsh | template > Generate zshrc
     template:
       src:   zshrc
       dest:  "{{ path_zsh }}/zshrc"
-      owner: "{{ item.name }}"
-      group: "{{ item.group | default(item.name) }}"
       mode:  "0600"
 
-  - name: ({{ item.name }}) zsh | stat > check if zplug repo present
+  - name: zsh | stat > Check if zplug repo present
     stat:
       path: "{{ path_zsh }}/zplug"
     register: _zplug
 
-  - name: ({{ item.name }}) zsh | git > clone zplug on ~/{{ path_zsh }}/zplug/
+  - name: zsh | git > Clone zplug on {{ path_zsh }}/zplug
     git:
       repo:  https://github.com/zplug/zplug
-      # dest:  "{{ ('/root' if item.name == 'root' else ('/home/' + item.name)) + '/' + path_zsh }}/zplug"
       dest:  "{{ path_zsh }}/zplug"
       depth: 1
     when: not _zplug.stat.exists
 
-  - name: ({{ item.name }}) zsh | file > setup owner and group for zplug dir
-    file:
-      # path:    "{{ ('/root' if item.name == 'root' else ('/home/' + item.name)) + '/' + path_zsh }}/zplug"
-      path:    "{{ path_zsh }}/zplug"
-      state:   directory
-      recurse: true
-      owner:   "{{ item.name }}"
-      group:   "{{ item.group | default(item.name) }}"
-      mode:    "0755"
-
-  - name: ({{ item.name }}) zsh | copy > config files
+  - name: zsh | copy > Config files
     copy:
       src:   "{{ role_path }}/files/zsh/"
-      dest:  "{{ ('/root' if item.name == 'root' else ('/home/' + item.name)) + '/' + path_zsh }}"
       dest:  "{{ path_zsh }}"
-      owner: "{{ item.name }}"
-      group: "{{ item.group | default(item.name) }}"
 
-  when:
-  # - import_tasks: oh-my-zsh.yml
-
-  become_user: "{{ item.name }}"
-  when: item.shell == "zsh"
+  when: shell == "zsh"
   tags: zsh
