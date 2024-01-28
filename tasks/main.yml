@@ -1,7 +1,7 @@
 - block:
-  - import_tasks: shell.yml
+  - import_tasks: home_dirs.yml
 
-  # - import_tasks: user_dirs.yml
+  # - import_tasks: sources.yml
 
   # - import_tasks: packages.yml
 

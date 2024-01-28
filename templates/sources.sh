@@ -2,7 +2,6 @@
 
 source {{ path_shell }}/exports.sh
 source {{ path_shell }}/aliases.sh
-# source {{ path_shell }}/icons.sh
 
 {% if item.shell is defined and item.shell == "zsh" %}
 source {{ path_zsh  }}/zshrc
