@@ -1,8 +1,8 @@
 - block:
-  - name: shell | user > check user exists
+  - name: shell | user > Check user exists
     user:
-      name: "{{ item.name }}"
-    loop: "{{ user }}"
+      name: "{{ default_user }}"
+    check_mode: true
 
   - name: shell | file > create user shell dir
     file:
