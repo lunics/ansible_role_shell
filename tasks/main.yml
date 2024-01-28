@@ -5,7 +5,7 @@
 
   - import_tasks: packages.yml
 
-  # - import_tasks: functions.yml
+  - import_tasks: functions.yml
 
   # - import_tasks: scripts.yml
 

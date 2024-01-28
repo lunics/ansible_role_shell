@@ -1,33 +1,16 @@
 - block:
   - name: functions | file > create {{ path_shell }}/functions dir
     file:
-      # path:  "{{ ('/root' if item.owner == 'root' else ('/home/' + item.owner)) + '/' + path_shell }}/functions"
       path:  "{{ path_shell }}/functions"
       state: directory
-      mode:  0700
+      mode:  "0700"
     loop: "{{ shell_functions }}"
 
   - name: scripts | copy > deploy functions on {{ path_shell }}/functions
     copy:
-      src:   "{{ item[1] }}/"
-      # dest:  "{{ ('/root' if item[0].owner == 'root' else ('/home/' + item[0].owner)) + '/' + path_shell }}/functions"
-      dest:  "{{ path_shell }}/functions"
-      mode:  0600
-    with_subelements:
-      - "{{ shell_functions }}"
-      - src
-      - skip_missing: true
-
-  - name: scripts | file > setup user/group on {{ path_shell }}/functions
-    file:
-      # path:  "{{ ('/root' if item[0].owner == 'root' else ('/home/' + item[0].owner)) + '/' + path_shell }}/functions"
-      path:  "{{ path_shell }}/functions"
-      owner: "{{ item[0].owner }}"
-      group: "{{ item[1].group | default(item[1].name) }}"
-      recurse: true
-    when: item[0].owner == item[1].name
-    with_nested:
-      - "{{ shell_functions }}"
-      - "{{ user }}"
+      src:  "{{ item }}/"
+      dest: "{{ path_shell }}/functions"
+      mode: "0600"
+    loop: "{{ shell_functions }}"
 
   tags: shell_functions
