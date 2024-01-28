@@ -1,10 +1,4 @@
 - block:
-  # - name: shell | file > Create user shell dir
-  #   file:
-  #     path:  "{{ path_shell }}"
-  #     state: directory
-  #     mode:  "0700"
-
   - name: shell | template > Generate sources.sh
     template:
       src:   sources.sh
