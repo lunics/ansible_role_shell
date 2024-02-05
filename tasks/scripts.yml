@@ -12,7 +12,7 @@
       mode: "0700"
     with_subelements:
       - "{{ user }}"
-      - shell.scripts
+      - shell_files.scripts
       - skip_missing: true
 
   tags: shell_scripts, local_bin
