@@ -1,5 +1,5 @@
 - block:
-  - import_tasks: home_dirs.yml
+  # - import_tasks: home_dirs.yml
 
   - import_tasks: sources.yml
 
@@ -23,11 +23,11 @@
 
   - import_tasks: history.yml
 
-  ## MOVE TO ANOTHER ROLE
-  # - import_tasks: motd.yml
-  # - name: banner | Configure banner welcome file
-  #   when: (ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu') and shell_cygwin_enabled == false
-  #   copy: src=11-welcome dest=/etc/update-motd.d/11-welcome owner={{ shell_owner }} group={{ shell_group }} mode=0755
+  # ## MOVE TO ANOTHER ROLE
+  # # - import_tasks: motd.yml
+  # # - name: banner | Configure banner welcome file
+  # #   when: (ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu') and shell_cygwin_enabled == false
+  # #   copy: src=11-welcome dest=/etc/update-motd.d/11-welcome owner={{ shell_owner }} group={{ shell_group }} mode=0755
 
   become_user: "{{ default_user }}"
   tags: shell

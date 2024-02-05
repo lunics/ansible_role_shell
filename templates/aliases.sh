@@ -1,3 +1,3 @@
-{% for item in shell_aliases | dict2items(key_name="alias", value_name="command") %}
-alias {{ item.alias }}=" {{ item.command }} "
+{% for f_item in item.1 | dict2items(key_name="alias", value_name="command") %}
+alias {{ f_item.alias }}=" {{ f_item.command }} "
 {% endfor %}

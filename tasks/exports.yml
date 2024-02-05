@@ -3,11 +3,11 @@
     blockinfile:
       path:   "{{ path_exports }}"
       create: true
-      marker: "# {mark} {{ item.name }}"
+      marker: "# {mark} {{ item.1.name }}"
       block: |
-        {% for export in item | dict2items(key_name="key", value_name="value") %}
+        {% for export in item.1 | dict2items(key_name="key", value_name="value") %}
           {%- if export.key != "name" %}
-            {%- if export.value | regex_search("\$\(") +%}  {# when item.value start by $(command) then don't add quotes #}
+            {%- if export.value | regex_search("\$\(") +%}  {# when item.1.value start by $(command) then don't add quotes #}
         export {{ export.key }}={{ export.value }}
             {%- else +%}
         export {{ export.key }}="{{ export.value }}"
@@ -15,6 +15,9 @@
           {%- endif %}
         {% endfor %}
     #"
-    loop: "{{ shell_exports }}"
+    with_subelements:
+      - "{{ user }}"
+      - shell.exports
+      - skip_missing: true
 
   tags: exports, shell_exports

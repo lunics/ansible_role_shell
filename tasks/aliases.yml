@@ -4,5 +4,9 @@
       src:  aliases.sh
       dest: "{{ path_aliases }}"
       mode: "0600"
+    with_subelements:
+      - "{{ user }}"
+      - shell.aliases
+      - skip_missing: true
 
   tags: aliases, shell_aliases

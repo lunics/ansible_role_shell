@@ -1,5 +1,9 @@
 - block:
   - name: shell | template > Generate sources.sh
     template:
-      src:   sources.sh
-      dest:  "{{ path_shell }}/sources.sh"
+      src:  sources.sh
+      dest: "{{ path_shell }}/sources.sh"
+    when: item.shell is defined
+    loop: "{{ user }}"
+
+  tags: shell_sources

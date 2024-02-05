@@ -5,11 +5,14 @@
       state: directory
       mode:  "0700"
 
-  - name: scripts | copy > deploy scripts on local/bin
+  - name: scripts | copy > Deploy scripts on {{ path_scripts }}/
     copy:
-      src:  "{{ item }}/"
+      src:  "{{ item.1 }}/"
       dest: "{{ path_scripts }}"
       mode: "0700"
-    loop: "{{ shell_scripts }}"
+    with_subelements:
+      - "{{ user }}"
+      - shell.scripts
+      - skip_missing: true
 
   tags: shell_scripts, local_bin

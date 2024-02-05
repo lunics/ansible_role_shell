@@ -1,15 +1,18 @@
 - block:
-  - name: functions | file > create {{ path_shell }}/functions dir
+  - name: functions | file > Create {{ path_shell }}/functions dir
     file:
       path:  "{{ path_shell }}/functions"
       state: directory
       mode:  "0700"
 
-  - name: scripts | copy > deploy functions on {{ path_shell }}/functions
+  - name: scripts | copy > Deploy functions on {{ path_shell }}/functions
     copy:
-      src:  "{{ item }}/"
+      src:  "{{ item.1 }}/"
       dest: "{{ path_shell }}/functions"
       mode: "0600"
-    loop: "{{ shell_functions }}"
+    with_subelements:
+      - "{{ user }}"
+      - shell.functions
+      - skip_missing: true
 
   tags: shell_functions

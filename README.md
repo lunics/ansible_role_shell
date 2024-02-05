@@ -1,5 +1,9 @@
 # Ansible role: SHELL
 
+{{ path_config }} et autre fonctionne sans le /home/{{ default_user }} car le role s'exécute en default_user
+
+
+
 *Work in progress.*
 
 Configure bash, zsh, exports, aliases, history, prompt.
@@ -51,6 +55,7 @@ shell_functions: []
   - "{{ path_files }}/scripts/functions"
 ```
 ### TODO
+- home_dirs.yml
 - try remove profile.yml for bash and zsh
 - templates/zshrc : source $LOCAL/repo/git-subrepo/.rc
 - move motd to another role ?

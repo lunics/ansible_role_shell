@@ -1,5 +1,5 @@
 - block:
-  - name: home_dirs | file > create user directories
+  - name: home_dirs | file > Create user directories
     file:
       path:  "{{ item }}"
       state: directory

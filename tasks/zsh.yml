@@ -44,5 +44,4 @@
       src:   "{{ role_path }}/files/zsh/"
       dest:  "{{ path_zsh }}"
 
-  when: shell == "zsh"
   tags: zsh
