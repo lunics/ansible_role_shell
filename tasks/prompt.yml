@@ -11,8 +11,8 @@
 
   - name: prompt | template > Generate starship config file
     template:
-      src:   starship.toml
-      dest:  "{{ path_config }}/starship/config.toml"
+      src:  starship.toml
+      dest: "{{ path_config }}/starship/config.toml"
 
   when: shell_prompt == "starship"
   tags: prompt, starship, shell_prompt

@@ -17,7 +17,7 @@
     #"
     with_subelements:
       - "{{ user }}"
-      - shell.exports
+      - shell_files.exports
       - skip_missing: true
 
   tags: exports, shell_exports

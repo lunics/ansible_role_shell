@@ -10,7 +10,6 @@
 
   - name: ({{ item.name }}) bash | blockinfile > add exports
     blockinfile:
-      # path:   "{{ ('/root' if item.name == 'root' else ('/home/' + item.name)) + '/' + path_exports }}"
       path:   "{{ path_exports }}"
       create: true
       marker: "# {mark} bash"
@@ -21,14 +20,12 @@
 
   - name: ({{ item.name }}) bash | file > create config dir
     file:
-      # path:  "{{ ('/root' if item.name == 'root' else ('/home/' + item.name)) + '/' + path_bash }}"
       path:  "{{ path_bash }}"
       state: directory
 
   - name: ({{ item.name }}) bash | copy > config files
     copy:
       src:   "{{ role_path }}/files/bash/"
-      # dest:  "{{ ('/root' if item.name == 'root' else ('/home/' + item.name)) + '/' + path_bash }}"
       dest:  "{{ path_bash }}"
       owner: "{{ item.name }}"
       group: "{{ item.group | default(item.name) }}"

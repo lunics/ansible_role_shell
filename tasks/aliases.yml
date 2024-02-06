@@ -6,7 +6,7 @@
       mode: "0600"
     with_subelements:
       - "{{ user }}"
-      - shell.aliases
+      - shell_files.aliases
       - skip_missing: true
 
   tags: aliases, shell_aliases

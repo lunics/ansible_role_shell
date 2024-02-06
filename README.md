@@ -55,6 +55,7 @@ shell_functions: []
   - "{{ path_files }}/scripts/functions"
 ```
 ### TODO
+- supprimer les defaults/*
 - home_dirs.yml
 - try remove profile.yml for bash and zsh
 - templates/zshrc : source $LOCAL/repo/git-subrepo/.rc

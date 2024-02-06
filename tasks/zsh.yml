@@ -23,9 +23,9 @@
 
   - name: zsh | template > Generate zshrc
     template:
-      src:   zshrc
-      dest:  "{{ path_zsh }}/zshrc"
-      mode:  "0600"
+      src:  zshrc
+      dest: "{{ path_zsh }}/zshrc"
+      mode: "0600"
 
   - name: zsh | stat > Check if zplug repo present
     stat:
@@ -41,7 +41,7 @@
 
   - name: zsh | copy > Config files
     copy:
-      src:   "{{ role_path }}/files/zsh/"
-      dest:  "{{ path_zsh }}"
+      src:  "{{ role_path }}/files/zsh/"
+      dest: "{{ path_zsh }}"
 
   tags: zsh
